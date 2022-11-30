@@ -9,7 +9,7 @@ struct coord{
 };
 
 class Piece{
-    bool color;     //0 white, 1 black
+    bool isWhite;
     coord position;
     public:
         virtual ~Piece() = 0;
@@ -23,7 +23,7 @@ class Piece{
 class Rook : Piece {
     bool moved = false;
     public:
-        Rook(char c, coord pos);
+        Rook(bool w, coord pos); //bool iswhite position
         void move(coord pos);
         coord getPosition();
         char getColor();
@@ -36,7 +36,7 @@ class Rook : Piece {
 class King : Piece {
     bool moved = false;
     public:
-        King(char c, coord pos);
+        King(bool w, coord pos);
         void move(coord pos);
         coord getPosition();
         char getColor();
@@ -50,7 +50,7 @@ class King : Piece {
 class Pawn : Piece {
     bool moved = false;
     public:
-        Pawn(char c, coord pos);
+        Pawn(bool w, coord pos);
         void move(coord pos);
         coord getPosition();
         char getColor();
@@ -61,7 +61,7 @@ class Pawn : Piece {
 
 class Bishop : Piece {
     public:
-        Bishop(char c, coord pos);
+        Bishop(bool w, coord pos);
         void move(coord pos);
         coord getPosition();
         char getColor();
@@ -71,7 +71,7 @@ class Bishop : Piece {
 
 class Knight : Piece {
     public:
-        Knight(char c, coord pos);
+        Knight(bool w, coord pos);
         void move(coord pos);
         coord getPosition();
         char getColor();
@@ -80,7 +80,7 @@ class Knight : Piece {
 
 class Queen : Piece {
     public:
-        Queen(char c, coord pos);
+        Queen(bool w, coord pos);
         void move(coord pos);
         coord getPosition();
         char getColor();
