@@ -9,16 +9,15 @@ struct coord{
 };
 
 class Piece{
-    char color;
+    bool color;     //0 white, 1 black
     coord position;
     public:
-        Piece(char c, coord pos);
-        virtual ~Piece();        
-        virtual void move(coord pos);
-        virtual coord getPosition();
-        virtual char getColor();
-        virtual bool validMove(coord pos);
-        virtual bool hasMoved();
+        virtual ~Piece() = 0;
+        virtual void move(coord pos) = 0;
+        virtual coord getPosition() = 0;
+        virtual char getColor() = 0;
+        virtual bool validMove(coord pos) = 0;
+        virtual bool hasMoved() = 0;
 };
 
 class Rook : Piece {
@@ -31,6 +30,7 @@ class Rook : Piece {
         bool validMove(coord pos);
         bool hasMoved();
         void castle();
+        char getType();
 };
 
 class King : Piece {
@@ -43,6 +43,7 @@ class King : Piece {
         bool validMove(coord pos);
         bool hasMoved();
         void castle();
+        char getType();
 };
 
 
@@ -56,7 +57,7 @@ class Pawn : Piece {
         bool validMove(coord pos);
         bool hasMoved();
         std::string promote(std::string piece);
-};
+        char getType();};
 
 class Bishop : Piece {
     public:
@@ -65,7 +66,7 @@ class Bishop : Piece {
         coord getPosition();
         char getColor();
         bool validMove(coord pos);
-        bool hasMoved();
+        char getType();
 };
 
 class Knight : Piece {
@@ -75,8 +76,7 @@ class Knight : Piece {
         coord getPosition();
         char getColor();
         bool validMove(coord pos);
-        bool hasMoved();
-};
+        char getType();};
 
 class Queen : Piece {
     public:
@@ -85,6 +85,6 @@ class Queen : Piece {
         coord getPosition();
         char getColor();
         bool validMove(coord pos);
-        bool hasMoved();
-};
+        char getType();
+        };
 #endif
