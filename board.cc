@@ -13,7 +13,7 @@ char Board::getState(coord pos){
     p->getType();
 };
 void Board::printResult(){
-
+    
 };
 Board::Board(){
     grid = new Piece*[8][8];
