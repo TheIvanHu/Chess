@@ -9,82 +9,62 @@ struct coord{
 };
 
 class Piece{
+    coord pos;
+    char type;
     bool isWhite;
-    coord position;
+    bool moved = false;
     public:
+        Piece(coord pos, char type, bool isWhite);
         virtual ~Piece() = 0;
-        virtual void move(coord pos) = 0;
-        virtual coord getPosition() = 0;
-        virtual char getColor() = 0;
-        virtual bool validMove(coord pos) = 0;
-        virtual bool hasMoved() = 0;
+        
+        void move(coord pos);
+        coord getPosition();
+        char getColor() ;
+        char getType();
+        bool hasMoved();
+
+        virtual bool validMove(coord p, Board * board) = 0;
 };
 
 class Rook : Piece {
-    bool moved = false;
+    
     public:
         Rook(bool w, coord pos); //bool iswhite position
-        void move(coord pos);
-        coord getPosition();
-        char getColor();
-        bool validMove(coord pos);
-        bool hasMoved();
+        bool validMove(coord pos, Board * board);
         void castle();
-        char getType();
 };
 
 class King : Piece {
-    bool moved = false;
     public:
         King(bool w, coord pos);
-        void move(coord pos);
-        coord getPosition();
-        char getColor();
+        void move(coord pos, Board * board);
         bool validMove(coord pos);
-        bool hasMoved();
         void castle();
-        char getType();
 };
 
 
 class Pawn : Piece {
-    bool moved = false;
     public:
         Pawn(bool w, coord pos);
-        void move(coord pos);
-        coord getPosition();
-        char getColor();
-        bool validMove(coord pos);
-        bool hasMoved();
+        bool validMove(coord pos, Board * board);
         std::string promote(std::string piece);
-        char getType();};
+};
 
 class Bishop : Piece {
     public:
         Bishop(bool w, coord pos);
-        void move(coord pos);
-        coord getPosition();
-        char getColor();
-        bool validMove(coord pos);
-        char getType();
+        bool validMove(coord pos, Board * board);
+
 };
 
 class Knight : Piece {
     public:
         Knight(bool w, coord pos);
-        void move(coord pos);
-        coord getPosition();
-        char getColor();
-        bool validMove(coord pos);
-        char getType();};
+        bool validMove(coord pos, Board * board);
 
 class Queen : Piece {
     public:
         Queen(bool w, coord pos);
-        void move(coord pos);
-        coord getPosition();
-        char getColor();
-        bool validMove(coord pos);
-        char getType();
+        bool validMove(coord pos, Board * board);
         };
 #endif

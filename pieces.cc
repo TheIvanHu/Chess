@@ -1,55 +1,52 @@
 #include "pieces.h"
 #include <string>
 
-Rook::Rook(char c, coord pos);
-void Rook::move(coord pos);
-coord Rook::getPosition();
-char Rook::getColor();
-bool Rook::validMove(coord pos);
-bool Rook::hasMoved();
+Piece::Piece(coord pos, char type, bool isWhite):: pos{pos}, type{type}, isWhite{isWhite}{};
+
+void Piece::move(coord p){
+    pos = p;
+}
+
+coord Piece::getPosition(){
+    return pos;
+}
+
+char Piece::getColor(){
+    if(w) return "w";
+    return "b";
+}
+bool Piece::hasMoved(){
+    return moved;
+}
+
+
+Rook::Rook(bool w, coord pos): Piece{pos, "r", w}{};
+bool Rook::validMove(coord pos){
+
+}
 void Rook::castle();
-char Rook::getType();
 
 
-King::King(char c, coord pos);
-void King::move(coord pos);
-coord King::getPosition();
-char King::getColor();
+King::King(bool w, coord pos): Piece{pos, "k", w}{};
 bool King::validMove(coord pos);
-bool King::hasMoved();
 King::void castle();
-King::char getType();
 
 
-Pawn::Pawn(char c, coord pos);
-void Pawn::move(coord pos);
-coord Pawn::getPosition();
-char Pawn::getColor();
+Pawn::Pawn(bool w, coord pos): Piece{pos, "p", w}{};
 bool Pawn::validMove(coord pos);
-bool Pawn::hasMoved();
 string Pawn::promote(std::string piece);
-char Pawn::getType();
 
-Bishop::Bishop(char c, coord pos);
-void Bishop::move(coord pos);
-coord Bishop::getPosition();
-char Bishop::getColor();
-bool Bishop::validMove(coord pos);
-char Bishop::getType();
+Bishop::Bishop(bool w, coord pos): Piece{pos, "b", w}{};
+bool Bishop::validMove(coord pos, Board * board){
 
+};
 
-Knight::Knight(char c, coord pos);
-void Knight::move(coord pos);
-coord Knight::getPosition();
-char Knight::getColor();
-bool Knight::validMove(coord pos);
-char Knight::getType();
+board[3,4] = new Pawn(true, p, pos, board)
+
+Knight::Knight(bool w, coord pos): Piece{pos, "n", w}{};
+bool Knight::validMove(coord pos, Board * board);
 
 
-Queen::Queen(char c, coord pos);
-void Queen::move(coord pos);
-coord Queen::getPosition();
-char Queen::getColor();
-bool Queen::validMove(coord pos);
-char Queen::getType();
+Queen::Queen(bool w, coord pos): Piece{pos, "q", w}{};
+bool Queen::validMove(coord pos, Board * board);
 
