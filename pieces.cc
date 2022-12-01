@@ -48,5 +48,17 @@ bool Knight::validMove(coord pos, Board * board);
 
 
 Queen::Queen(bool w, coord pos): Piece{pos, "q", w}{};
-bool Queen::validMove(coord pos, Board * board);
+bool Queen::validMove(coord p, Board * board){
+    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)){
+        throw out of bounds
+    }
+    if(p.x == pos.x){
+        if(p.y < pos.y){
+            for(int x = p.y; pos.y)
+
+        }
+    }
+
+
+};
 
