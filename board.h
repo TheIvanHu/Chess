@@ -16,6 +16,9 @@ public:
     void setTurn(char turn);
     char getState(coord pos);
     void printResult();
+    bool isCheck();
+    bool isCheckmate();
+    bool isStalemate();
     Board();
     ~Board();
 
