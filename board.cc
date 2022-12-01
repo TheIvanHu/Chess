@@ -39,7 +39,7 @@ bool Board::isCheck(){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 Piece* p = grid[i][j];
-                if(p->getColor() == "b" && p->getType() == "k"){
+                if(p->getColor() == 'b' && p->getType() == 'k'){
                     king = p;
                 }
             }
@@ -73,7 +73,7 @@ bool Board::isStalemate(){
 }
 
 Board::Board(){
-    grid = new Piece*[8][8];
+    grid = new Piece**[8];
     whiteTurn = true;
     whiteWins = 0;
     blackWins = 0;
