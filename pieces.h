@@ -30,7 +30,7 @@ class Rook : Piece {
     
     public:
         Rook(bool w, coord pos); //bool iswhite position
-        bool validMove(coord pos, Board * board);
+        bool validMove(coord p, Board * board);
         void castle();
 };
 
@@ -38,7 +38,7 @@ class King : Piece {
     public:
         King(bool w, coord pos);
         void move(coord pos, Board * board);
-        bool validMove(coord pos);
+        bool validMove(coord p, Board * board);
         void castle();
 };
 
@@ -46,25 +46,25 @@ class King : Piece {
 class Pawn : Piece {
     public:
         Pawn(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
+        bool validMove(coord p, Board * board);
         std::string promote(std::string piece);
 };
 
 class Bishop : Piece {
     public:
         Bishop(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
+        bool validMove(coord p, Board * board);
 
 };
 
 class Knight : Piece {
     public:
         Knight(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
+        bool validMove(coord p, Board * board);
 
 class Queen : Piece {
     public:
         Queen(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
+        bool validMove(coord p, Board * board);
         };
 #endif
