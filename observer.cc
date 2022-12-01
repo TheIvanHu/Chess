@@ -13,8 +13,9 @@ void TextObserver::notify(){
             coord p;
             p.x = j;
             p.y = i;
-            std::cout << subject.getState(p) << std::endl;
+            std::cout << subject.getState(p);
         }
+        std::cout << std::endl;
     }
     std::cout << std::endl << "  abcdefgh";
 }
