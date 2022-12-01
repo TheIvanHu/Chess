@@ -71,13 +71,22 @@ void Rook::castle();
 
 
 King::King(bool w, coord pos): Piece{pos, "k", w}{
-    // 
-    if((pos.x == 7 || pos.x == 2) && ((pos.y == 0 && isWhite) || (pos.y == 8 && !isWhite)) && !moved){
-        if()
-    }
+    //Check Boundaries
+    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
+    //Make sure one of same players pieces isn't already on that square
+    if(board[p.y][p.x] && board[p.y][p.x]->getColor() == this->getcolor()) return false;
+    
 };
 bool King::validMove(coord p, Board * board){
-    
+    //Check Boundaries
+    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
+    //Make sure one of same players pieces isn't already on that square
+    if(board[p.y][p.x] && board[p.y][p.x]->getColor() == this->getcolor()) return false;
+    //Make sure the target square isn't the square the piece is already on
+    if(p.x == pos.x && p.y == pos.y) return false;
+
+    if((p.y == (pos.y + 1)||(p.y == (pos.y - 1)) || (p.y == pos.y)) && (p.x == (pos.x + 1)||(p.x == (pos.x - 1)) || (p.x == pos.x))) return true;
+    return false;
 };
 King::void castle();
 
@@ -88,6 +97,8 @@ bool Pawn::validMove(coord p, Board * board){
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
     //Make sure one of same players pieces isn't already on that square
     if(board[p.y][p.x] && board[p.y][p.x]->getColor() == this->getcolor()) return false;
+    //Make sure the target square isn't the square the piece is already on
+    if(p.x == pos.x && p.y == pos.y) return false;
     
     if(p.x == pos.x){
         if(board[p.y][p.x]) return false;
@@ -99,7 +110,7 @@ bool Pawn::validMove(coord p, Board * board){
         if(isWhite && (p.x == (pos.x - 1)) && ((p.y == (pos.y + 1) || (p.y == (pos.y - 1))))) return true;
         if(!isWhite && (p.x == (pos.x + 1)) && ((p.y == (pos.y + 1) || (p.y == (pos.y - 1))))) return true;
     }
-    
+    return false;    
 };
 string Pawn::promote(std::string piece){}
 
@@ -111,7 +122,6 @@ bool Bishop::validMove(coord p, Board * board);{
     if(board[p.y][p.x] && board[p.y][p.x]->getColor() == this->getcolor()) return false;
     //Make sure the target square isn't the square the piece is already on
     if(p.x == pos.x && p.y == pos.y) return false;
-    //if(abs(p.x-pos.x) != abs(p.y-pos.y)) return false; 
 
     int d = abs(p.x-pos.x);
 
@@ -146,7 +156,6 @@ bool Knight::validMove(coord p, Board * board){
     
     return false;
 }; 
-
 
 Queen::Queen(bool w, coord pos): Piece{pos, "q", w}{};
 bool Queen::validMove(coord p, Board * board){
