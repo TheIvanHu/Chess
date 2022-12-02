@@ -39,7 +39,11 @@ char Piece::getType(){
     return type;
 }
 
-Rook::Rook(bool w, coord pos): Piece{pos, 'r', w}{};
+Rook::Rook(bool w, coord pos): Piece{pos, 'r', w}{
+    if(w){
+        type = type - 32;
+    }
+};
 bool Rook::validMove(coord p, Piece *** grid){
     //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
@@ -71,7 +75,11 @@ bool Rook::validMove(coord p, Piece *** grid){
 void Rook::castle(){};
 
 
-King::King(bool w, coord pos): Piece{pos, 'k', w}{};   
+King::King(bool w, coord pos): Piece{pos, 'k', w}{
+        if(w){
+        type = type - 32;
+    }
+};   
 bool King::validMove(coord p, Piece *** grid){
     //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
@@ -86,7 +94,11 @@ bool King::validMove(coord p, Piece *** grid){
 void King::castle(){};
 
 
-Pawn::Pawn(bool w, coord pos): Piece{pos, 'p', w}{};
+Pawn::Pawn(bool w, coord pos): Piece{pos, 'p', w}{
+    if(w){
+        type = type - 32;
+    }
+};
 bool Pawn::validMove(coord p, Piece *** grid){
     //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
@@ -109,7 +121,11 @@ bool Pawn::validMove(coord p, Piece *** grid){
 };
 void Pawn::promote(std::string piece){}
 
-Bishop::Bishop(bool w, coord pos): Piece{pos, 'b', w}{};
+Bishop::Bishop(bool w, coord pos): Piece{pos, 'b', w}{
+    if(w){
+        type = type - 32;
+    }
+};
 bool Bishop::validMove(coord p, Piece *** grid){
      //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
@@ -140,7 +156,11 @@ bool Bishop::validMove(coord p, Piece *** grid){
     return false;
 };
 
-Knight::Knight(bool w, coord pos): Piece{pos, 'n', w}{};
+Knight::Knight(bool w, coord pos): Piece{pos, 'n', w}{
+    if(w){
+        type = type - 32;
+    }
+};
 bool Knight::validMove(coord p, Piece *** grid){
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
     //Make sure one of same players pieces isn't already on that square
@@ -152,7 +172,11 @@ bool Knight::validMove(coord p, Piece *** grid){
     return false;
 }; 
 
-Queen::Queen(bool w, coord pos): Piece{pos, 'q', w}{};
+Queen::Queen(bool w, coord pos): Piece{pos, 'q', w}{
+    if(w){
+        type = type - 32;
+    }
+};
 bool Queen::validMove(coord p, Piece *** grid){
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
     //Make sure one of same players pieces isn't already on that square

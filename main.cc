@@ -10,28 +10,29 @@ Board defaultBoard(){
     Board b ;
     
     for(int i = 0; i < 8; i ++){
-        b.grid[6][i] = new Pawn(0, coord{i,6});
-        b.grid[1][i] = new Pawn(1, coord{i,1});
+        b.grid[i][6] = new Pawn(0, coord{i,6});
+        b.grid[i][1] = new Pawn(1, coord{i,1});
     }
     
-    b.grid[0][0] = new Rook(0, coord{0,0});
-    b.grid[0][1] = new Knight(0, coord{1,0});
-    b.grid[0][2] = new Bishop(0, coord{2,0});
-    b.grid[0][3] = new Queen(0, coord{3,0});
-    b.grid[0][4] = new King(0, coord{4,0});
-    b.grid[0][5] = new Bishop(0, coord{5,0});
-    b.grid[0][6] = new Knight(0, coord{6,0});
-    b.grid[0][7] = new Rook(0, coord{7,0});
+    b.grid[0][7] = new Rook(0, coord{0,7});
+    b.grid[1][7] = new Knight(0, coord{1,7});
+    b.grid[2][7] = new Bishop(0, coord{2,7});
+    b.grid[3][7] = new Queen(0, coord{3,7});
+    b.grid[4][7] = new King(0, coord{4,7});
+    b.grid[5][7] = new Bishop(0, coord{5,7});
+    b.grid[6][7] = new Knight(0, coord{6,7});
+    b.grid[7][7] = new Rook(0, coord{7,7});
 
-    b.grid[7][0] = new Rook(1, coord{0,0});
-    b.grid[7][1] = new Knight(1, coord{1,0});
-    b.grid[7][2] = new Bishop(1, coord{2,0});
-    b.grid[7][3] = new Queen(1, coord{3,0});
-    b.grid[7][4] = new King(1, coord{4,0});
-    b.grid[7][5] = new Bishop(1, coord{5,0});
-    b.grid[7][6] = new Knight(1, coord{6,0});
-    b.grid[7][7] = new Rook(1, coord{7,0});
-
+    b.grid[0][0] = new Rook(1, coord{0,0});
+    b.grid[1][0] = new Knight(1, coord{1,0});
+    b.grid[2][0] = new Bishop(1, coord{2,0});
+    b.grid[3][0] = new Queen(1, coord{3,0});
+    b.grid[4][0] = new King(1, coord{4,0});
+    b.grid[5][0] = new Bishop(1, coord{5,0});
+    b.grid[6][0] = new Knight(1, coord{6,0});
+    b.grid[7][0] = new Rook(1, coord{7,0});
+    cout << b.grid[7][1]->getType();
+    
     return b;
 }
 
@@ -66,8 +67,24 @@ int main(){
             while(cin >> command){   //setup loop
                 if(command == "+"){
                     char piece;
-                    string coord;
-                    cin >> piece >> coord;
+                    string pos;
+                    int x, y;
+                    cin >> piece >> pos;
+                    x = pos.at(0) - 'a';
+                    y = pos.at(1);
+                    if(piece == 'K' || piece == 'k'){
+                        board.grid[x][y] = new King(piece <= 90 && piece >= 65, coord{x,y});
+                    }else if(piece == 'Q' || piece == 'q'){
+                        board.grid[x][y] = new Queen(piece <= 90 && piece >= 65, coord{x,y});
+                    }else if(piece == 'B' || piece == 'b'){
+                        board.grid[x][y] = new Bishop(piece <= 90 && piece >= 65, coord{x,y});
+                    }else if(piece == 'N' || piece == 'n'){
+                        board.grid[x][y] = new Knight(piece <= 90 && piece >= 65, coord{x,y});
+                    }else if(piece == 'R' || piece == 'r'){
+                        board.grid[x][y] = new Rook(piece <= 90 && piece >= 65, coord{x,y});
+                    }else if(piece == 'P' || piece == 'p'){
+                        board.grid[x][y] = new Pawn(piece <= 90 && piece >= 65, coord{x,y});
+                    }
                 }else if(command == "-"){
                     string coord;
                     cin >> coord;
