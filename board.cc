@@ -1,6 +1,7 @@
 #include "board.h"
 #include "subject.h"
 #include "pieces.h"
+#include <iostream>
 
 void Board::move(coord start, coord end){
     Piece* p1 = grid[start.y][start.x];
@@ -33,28 +34,52 @@ void Board::printBoard(){
     this->notifyObservers();
 }
 void Board::printResult(){
+    double whiteScore = whiteWins + 0.5 * draws;
+    double blackScore = blackWins + 0.5 * draws;
+    std::cout << "Final Score:" << std::endl << "White: " << whiteScore << std::endl << "Black: " << blackScore;
 };
-
-bool Board::isCheck(){
-    Piece* king;
+Piece* Board::findKing(){
     if(whiteTurn){
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < 8; i++){ //find black king
             for(int j = 0; j < 8; j++){
                 Piece* p = grid[i][j];
                 if(p->getColor() == 'b' && p->getType() == 'k'){
-                    king = p;
+                    return p;
                 }
             }
         }
-        
     }
     else{
-
+        for(int i = 0; i < 8; i++){ //find white king
+            for(int j = 0; j < 8; j++){
+                Piece* p = grid[i][j];
+                if(p->getColor() == 'w' && p->getType() == 'k'){
+                    return p;
+                }
+            }
+        }
     }
+}
+bool Board::isCheck(){
+    Piece* king = findKing();
+    for(int i = 0; i < 8; i++){ //check if anything can "take" the king
+        for(int j = 0; j < 8; j++){
+            Piece* p = grid[i][j];
+            if(p != king && p->validMove(king->getPosition(), grid)){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 bool Board::isCheckmate(){
-    
+    Piece* king = findKing();
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            Piece* p = grid[i][j];
+        }
+    }
 }
 
 bool Board::isStalemate(){
@@ -75,7 +100,9 @@ bool Board::isStalemate(){
 }
 
 Board::Board(){
-    grid = new Piece*[8][8];
+    for(int i = 0; i < 8; i++){
+        grid[i] = new Piece*[8];
+    }
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
             grid[i][j] = nullptr;

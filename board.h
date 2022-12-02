@@ -16,7 +16,7 @@ class Board : public Subject {
     int blackWins;
     int draws;
 public:
-    Piece***grid;
+    Piece*** grid;
 
     void move(coord start, coord end);
     void setTurn(char turn);
@@ -26,6 +26,7 @@ public:
     bool isCheck();
     bool isCheckmate();
     bool isStalemate();
+    Piece* findKing();
     Board();
     ~Board();
 
