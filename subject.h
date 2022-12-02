@@ -13,6 +13,6 @@ public:
 protected:
     void notifyObservers();
 
-}
+};
 
 #endif
