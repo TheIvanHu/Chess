@@ -9,8 +9,8 @@ TextObserver::TextObserver(Board * subject): subject{subject} {};
 
 
 void TextObserver::notify(){
-    for(int i = 0; i < 8; i++){         // row
-    out << 8 - i << " ";
+    for(int i = 7; i >= 0; i--){         // row
+    out << i + 1 << " ";
         for(int j = 0; j < 8; j++){     // col
             coord p;
             p.x = j;
