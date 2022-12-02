@@ -1,8 +1,7 @@
-#ifndef __SUBJECT_H__
-#define __SUBJECT_H__
+#ifndef __OBSERVER_H__
+#define __OBSERVER_H__
 
-#include "board.h"
-
+#include <iostream>
 class Subject;
 class Board;
 
@@ -12,20 +11,22 @@ public:
     virtual ~Observer() = default;
 };
 
-class TextObserver : Observer {
-    Board subject;
+class TextObserver : public Observer {
+    std::ostream &out = std::cout;
+
+    Board * subject;
 public:
     void notify() override;
-    TextObserver(Board subject);
-    ~TextObserver();
+    TextObserver(Board * subject);
+    ~TextObserver(){};
 };
 
-class GraphicalObserver : Observer {
-    Board subject;
+class GraphicalObserver : public Observer {
+    Board * subject;
 public:
     void notify() override;
-    GraphicalObserver(Board subject);
-    ~GraphicalObserver();
+    GraphicalObserver(Board * subject);
+    ~GraphicalObserver(){};
 };
 
 

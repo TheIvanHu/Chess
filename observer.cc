@@ -1,23 +1,25 @@
 #include "observer.h"
 #include "pieces.h"
 #include "board.h"
-#include "window.h"
 #include <iostream>
 
 struct coord;
 
+TextObserver::TextObserver(Board * subject): subject{subject} {};
+
+
 void TextObserver::notify(){
     for(int i = 0; i < 8; i++){         // row
-    std::cout << 8 - i << " ";
+    out << 8 - i << " ";
         for(int j = 0; j < 8; j++){     // col
             coord p;
             p.x = j;
             p.y = i;
-            std::cout << subject.getState(p);
+            out << subject->getState(p);
         }
-        std::cout << std::endl;
+        out << std::endl;
     }
-    std::cout << std::endl << "  abcdefgh";
+    out << std::endl << "  abcdefgh";
 }
 
 void GraphicalObserver::notify(){

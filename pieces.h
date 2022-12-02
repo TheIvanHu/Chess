@@ -2,6 +2,7 @@
 #define __PIECES_H__
 
 #include <string>
+class Board;
 
 struct coord{
     int x;
@@ -9,13 +10,14 @@ struct coord{
 };
 
 class Piece{
-    coord pos;
-    char type;
-    bool isWhite;
-    bool moved = false;
+    protected:
+        coord pos;
+        char type;
+        bool isWhite;
+        bool moved = false;
     public:
         Piece(coord pos, char type, bool isWhite);
-        virtual ~Piece() = 0;
+        virtual ~Piece(){};
         
         void move(coord pos);
         coord getPosition();
@@ -23,48 +25,49 @@ class Piece{
         char getType();
         bool hasMoved();
 
-        virtual bool validMove(coord p, Board * board) = 0;
+        virtual bool validMove(coord p, Piece *** grid) = 0;
 };
 
-class Rook : Piece {
+class Rook : public Piece {
     
     public:
         Rook(bool w, coord pos); //bool iswhite position
-        bool validMove(coord pos, Board * board);
+        bool validMove(coord p, Piece *** grid);
         void castle();
 };
 
-class King : Piece {
+class King : public Piece {
     public:
         King(bool w, coord pos);
         void move(coord pos, Board * board);
-        bool validMove(coord pos);
+        bool validMove(coord p, Piece *** grid);
         void castle();
 };
 
 
-class Pawn : Piece {
+class Pawn : public Piece {
     public:
         Pawn(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
-        std::string promote(std::string piece);
+        bool validMove(coord p, Piece *** grid);
+        void promote(std::string piece);
 };
 
-class Bishop : Piece {
+class Bishop : public Piece {
     public:
         Bishop(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
+        bool validMove(coord p, Piece *** grid);
 
 };
 
-class Knight : Piece {
+class Knight : public Piece {
     public:
         Knight(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
-
-class Queen : Piece {
+        bool validMove(coord p, Piece *** grid);
+};
+class Queen : public Piece {
     public:
         Queen(bool w, coord pos);
-        bool validMove(coord pos, Board * board);
-        };
+        bool validMove(coord p, Piece *** grid);
+};
+
 #endif
