@@ -31,8 +31,6 @@ Board defaultBoard(){
     b.grid[5][0] = new Bishop(1, coord{5,0});
     b.grid[6][0] = new Knight(1, coord{6,0});
     b.grid[7][0] = new Rook(1, coord{7,0});
-    cout << b.grid[7][1]->getType();
-    
     return b;
 }
 

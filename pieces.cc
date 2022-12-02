@@ -1,7 +1,9 @@
 #include "pieces.h"
+#include <iostream>
 #include <string>
 
-Piece::Piece(coord pos, char type, bool isWhite): pos{pos}, type{type}, isWhite{isWhite}{};
+Piece::Piece(coord pos, char type, bool isWhite): pos{pos}, type{type}, isWhite{isWhite}{
+};
 
 int max(int a, int b){
     if(a < b) return b;
@@ -41,7 +43,7 @@ char Piece::getType(){
 
 Rook::Rook(bool w, coord pos): Piece{pos, 'r', w}{
     if(w){
-        type = type - 32;
+        type = 'R';
     }
 };
 bool Rook::validMove(coord p, Piece *** grid){
@@ -77,7 +79,7 @@ void Rook::castle(){};
 
 King::King(bool w, coord pos): Piece{pos, 'k', w}{
         if(w){
-        type = type - 32;
+        type = 'K';
     }
 };   
 bool King::validMove(coord p, Piece *** grid){
@@ -96,7 +98,7 @@ void King::castle(){};
 
 Pawn::Pawn(bool w, coord pos): Piece{pos, 'p', w}{
     if(w){
-        type = type - 32;
+        type = 'P';
     }
 };
 bool Pawn::validMove(coord p, Piece *** grid){
@@ -123,7 +125,7 @@ void Pawn::promote(std::string piece){}
 
 Bishop::Bishop(bool w, coord pos): Piece{pos, 'b', w}{
     if(w){
-        type = type - 32;
+        type = 'B';
     }
 };
 bool Bishop::validMove(coord p, Piece *** grid){
@@ -158,7 +160,7 @@ bool Bishop::validMove(coord p, Piece *** grid){
 
 Knight::Knight(bool w, coord pos): Piece{pos, 'n', w}{
     if(w){
-        type = type - 32;
+        type = 'N';
     }
 };
 bool Knight::validMove(coord p, Piece *** grid){
@@ -174,7 +176,7 @@ bool Knight::validMove(coord p, Piece *** grid){
 
 Queen::Queen(bool w, coord pos): Piece{pos, 'q', w}{
     if(w){
-        type = type - 32;
+        type = 'Q';
     }
 };
 bool Queen::validMove(coord p, Piece *** grid){
