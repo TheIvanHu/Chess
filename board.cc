@@ -26,7 +26,7 @@ void Board::setTurn(char turn){
 };
 
 char Board::getState(coord pos){
-    Piece* p = grid[pos.y][pos.x];
+    Piece* p = grid[pos.x][pos.y];
     return p->getType();
 };
 
