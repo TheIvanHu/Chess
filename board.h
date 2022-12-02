@@ -1,11 +1,16 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
-#include "subject.h"
 
+#include "subject.h"
 class Piece;
 struct coord;
 
-class Board : Subject{
+struct Move{
+    //first move of the moving piece
+    bool firstMove;
+    
+};
+class Board : public Subject {
     bool whiteTurn;
     int whiteWins;
     int blackWins;

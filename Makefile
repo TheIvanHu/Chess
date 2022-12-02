@@ -1,7 +1,7 @@
 CXX = g++
 EXEC = chess
 CXXFLAGS = -std=c++14 -Wall -MMD -g -Werror=vla
-OBJECTS = board.o main.o pieces.o subject.o observer.o
+OBJECTS =  pieces.o  observer.o  board.o  subject.o main.o
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}

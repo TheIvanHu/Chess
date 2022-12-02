@@ -1,5 +1,6 @@
 #include "pieces.h"
 #include "board.h"
+#include "observer.h"
 #include <iostream>
 
 using namespace std;
@@ -29,6 +30,8 @@ Board * defaultBoard(){
     b->grid[7][5] = new Bishop(1, coord{5,0});
     b->grid[7][6] = new Knight(1, coord{6,0});
     b->grid[7][7] = new Rook(1, coord{7,0});
+
+    return b;
 }
 
 int main(){

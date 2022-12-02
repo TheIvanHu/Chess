@@ -2,7 +2,7 @@
 #define __PIECES_H__
 
 #include <string>
-#include "board.h"
+class Board;
 
 struct coord{
     int x;
@@ -17,7 +17,7 @@ class Piece{
         bool moved = false;
     public:
         Piece(coord pos, char type, bool isWhite);
-        virtual ~Piece() = 0;
+        virtual ~Piece(){};
         
         void move(coord pos);
         coord getPosition();
