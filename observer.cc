@@ -5,6 +5,9 @@
 
 struct coord;
 
+TextObserver::TextObserver(Board * subject): subject{subject} {};
+
+
 void TextObserver::notify(){
     for(int i = 0; i < 8; i++){         // row
     out << 8 - i << " ";

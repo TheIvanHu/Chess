@@ -29,8 +29,10 @@ char Board::getState(coord pos){
     return p->getType();
 };
 
+void Board::printBoard(){
+    this->notifyObservers();
+}
 void Board::printResult(){
-
 };
 
 bool Board::isCheck(){
@@ -73,7 +75,12 @@ bool Board::isStalemate(){
 }
 
 Board::Board(){
-    grid = new Piece**[8];
+    grid = new Piece*[8][8];
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            grid[i][j] = nullptr;
+        }
+    }
     whiteTurn = true;
     whiteWins = 0;
     blackWins = 0;

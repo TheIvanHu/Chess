@@ -11,7 +11,7 @@ public:
     virtual ~Observer() = default;
 };
 
-class TextObserver : Observer {
+class TextObserver : public Observer {
     std::ostream &out = std::cout;
 
     Board * subject;
@@ -21,7 +21,7 @@ public:
     ~TextObserver(){};
 };
 
-class GraphicalObserver : Observer {
+class GraphicalObserver : public Observer {
     Board * subject;
 public:
     void notify() override;
