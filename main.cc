@@ -41,18 +41,20 @@ Board* defaultBoard(){
 int main(){
     Board *board;
     vector<Observer *> obs;
+    board = defaultBoard();
+    TextObserver * newOb = new TextObserver(board);
+    board->attach(newOb);
+    obs.emplace_back(newOb);
     bool whiteTurn = true;
 
     string command;
+    
     while(cin >> command){ //command loop
     
         if(command == "game"){
             string p1; //white
             string p2; //black
-            board = defaultBoard();
-            TextObserver * newOb = new TextObserver(board);
-            board->attach(newOb);
-            obs.emplace_back(newOb);
+            
             board->printBoard();
 
 
@@ -73,10 +75,11 @@ int main(){
                     string pos;
                     int x, y;
                     cin >> piece >> pos;
+                    
                     x = pos.at(0) - 'a';
-                    y = pos.at(1);
+                    y = pos.at(1) - '1';
                     if(piece == 'K' || piece == 'k'){
-                        board->grid[x][y] = new King(piece <= 90 && piece >= 65, coord{x,y});
+                        board->grid[x][y] = new King(piece == 'K', coord{x,y});
                     }else if(piece == 'Q' || piece == 'q'){
                         board->grid[x][y] = new Queen(piece <= 90 && piece >= 65, coord{x,y});
                     }else if(piece == 'B' || piece == 'b'){
@@ -88,6 +91,7 @@ int main(){
                     }else if(piece == 'P' || piece == 'p'){
                         board->grid[x][y] = new Pawn(piece <= 90 && piece >= 65, coord{x,y});
                     }
+
                 }else if(command == "-"){
                     string coord;
                     cin >> coord;
