@@ -2,6 +2,8 @@
 #define __PIECES_H__
 
 #include <string>
+#include <vector>
+
 class Board;
 
 struct coord{
@@ -26,6 +28,7 @@ class Piece{
         bool hasMoved();
 
         virtual bool validMove(coord p, Piece *** grid) = 0;
+        virtual std::vector<coord> listValidMoves(coord p, Piece *** grid) = 0;
 };
 
 class Rook : public Piece {
@@ -34,6 +37,7 @@ class Rook : public Piece {
         Rook(bool w, coord pos); //bool iswhite position
         bool validMove(coord p, Piece *** grid);
         void castle();
+        std::vector<coord> listValidMoves(coord p, Piece ***grid) = 0;
 };
 
 class King : public Piece {
@@ -42,6 +46,7 @@ class King : public Piece {
         void move(coord pos, Board * board);
         bool validMove(coord p, Piece *** grid);
         void castle();
+        std::vector<coord> listValidMoves(coord p, Piece ***grid) = 0;      
 };
 
 
@@ -50,24 +55,27 @@ class Pawn : public Piece {
         Pawn(bool w, coord pos);
         bool validMove(coord p, Piece *** grid);
         void promote(std::string piece);
+        std::vector<coord> listValidMoves(coord p, Piece ***grid) = 0;
 };
 
 class Bishop : public Piece {
     public:
         Bishop(bool w, coord pos);
         bool validMove(coord p, Piece *** grid);
-
+        std::vector<coord> listValidMoves(coord p, Piece ***grid) = 0;
 };
 
 class Knight : public Piece {
     public:
         Knight(bool w, coord pos);
         bool validMove(coord p, Piece *** grid);
+        std::vector<coord> listValidMoves(coord p, Piece ***grid) = 0;
 };
 class Queen : public Piece {
     public:
         Queen(bool w, coord pos);
         bool validMove(coord p, Piece *** grid);
+        std::vector<coord> listValidMoves(coord p, Piece ***grid) = 0;
 };
 
 #endif
