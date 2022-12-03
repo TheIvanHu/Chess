@@ -96,7 +96,6 @@ int main(){
                         whiteTurn = true;
                     }
                 }else if(command == "done"){
-                    board->printBoard();
                     break;
                 }
             }
