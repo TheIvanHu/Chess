@@ -10,6 +10,7 @@ struct Move{
     bool firstMove;
     
 };
+
 class Board : public Subject {
     bool whiteTurn;
     int whiteWins;
