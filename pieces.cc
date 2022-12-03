@@ -46,6 +46,7 @@ Rook::Rook(bool w, coord pos): Piece{pos, 'r', w}{
         type = 'R';
     }
 };
+
 bool Rook::validMove(coord p, Piece *** grid){
     //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
@@ -75,12 +76,6 @@ bool Rook::validMove(coord p, Piece *** grid){
 }
         
 void Rook::castle(){};
-
-void Rook::listValidMoves(){
-    for()
-};
-
-
 King::King(bool w, coord pos): Piece{pos, 'k', w}{
         if(w){
         type = 'K';
