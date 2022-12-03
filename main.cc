@@ -36,9 +36,9 @@ Board* defaultBoard(Board* b){
 
 int main(){
     bool whiteTurn = true;
-    int whiteWins;
-    int blackWins;
-    int draws;
+
+    double whiteScore = 0;
+    double blackScore = 0;
 
     Board *board = new Board;
     vector<Observer *> obs;
@@ -118,7 +118,5 @@ int main(){
 
     }
 
-    double whiteScore = whiteWins + 0.5 * draws;
-    double blackScore = blackWins + 0.5 * draws;
     cout << "Final Score:" << endl << "White: " << whiteScore << endl << "Black: " << blackScore;
 }
