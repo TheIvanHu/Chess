@@ -76,6 +76,10 @@ bool Rook::validMove(coord p, Piece *** grid){
         
 void Rook::castle(){};
 
+void Rook::listValidMoves(){
+    for()
+};
+
 
 King::King(bool w, coord pos): Piece{pos, 'k', w}{
         if(w){
