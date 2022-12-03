@@ -5,20 +5,38 @@
 
 void Board::move(coord start, coord end){
     Piece* p1 = grid[start.x][start.y];
-    Piece* p2 = grid[start.x][start.y];
-    if(p1 == nullptr || start.y < 0 || start.y > 7 || start.x < 0 || start.x > 7 || 
-       ((start.x == end.x) && (start.y == end.y)) || !p1->validMove(end, grid) || p1->getColor() != turn){
-        throw std::string("Invalid move."); //make error type
+    Piece* p2 = grid[end.x][end.y];
+    //checking p1 isn't a null pointer, the start and end 
+    if(p1 == nullptr || start.y < 0 || start.y > 7 || start.x < 0 || start.x > 7 || end.y < 0 || end.y > 7 || end.x < 0 || end.x > 7){
+        throw std::string("Move out of bounds."); 
     }
-    else if(p2 == nullptr){
-        grid[end.x][end.y] = p1;
-        grid[start.x][start.y] = nullptr;
+    if( !p1->validMove(end, grid) ){
+        throw std::string("Invalid Move.");
+    }
+    if(((start.x == end.x) && (start.y == end.y))){
+        throw std::string("You must move piece from starting square.");
+    }
+    if(p1->getColor() != turn){
+        throw std::string("Not your turn.");
+    }
+    if((p2 && (p2->getColor() == p1->getColor()))){
+        throw std::string("Space is already occupied by one of your pieces.");
+    }
+    p1->move(end);
+    grid[end.x][end.y] = p1;
+    grid[start.x][start.y] = nullptr;
+    if(p2 == nullptr){
+        Move m{!p1->hasMoved(), start, end, false};
+        moves.emplace_back(m);
     }
     else{
-        //add undo part later
-        grid[end.x][end.y] = p1;
-        grid[start.x][start.y] = nullptr;
+        captured.emplace_back(p2);
+        Move m{!p1->hasMoved(), start, end, true};
+        moves.emplace_back(m);
     }
+    if(!p1->hasMoved()) p1->setMoved(true);
+
+
     // if(this->isStalemate()){
 
     // }
@@ -31,6 +49,31 @@ void Board::move(coord start, coord end){
     // }
     
 };
+
+void Board::undo(){
+    if(moves.size() == 0) return;
+    
+    Move m = moves.at(moves.size() - 1);
+    moves.pop_back();
+
+    Piece* p1 = grid[m.end.x][m.end.y];
+    if(m.firstMove){
+        p1->setMoved(false);
+    }
+    grid[m.start.x][m.start.y] = p1;
+    p1->move(m.start);
+    
+    if(m.capture){
+        Piece* p2 = captured.at(captured.size() - 1);
+        captured.pop_back();
+        grid[m.end.x][m.end.y] = p2;
+    } else{
+        grid[m.end.x][m.end.y] = nullptr;
+    }
+    
+    if(turn == 'w') turn = 'b';
+    else turn = 'w';
+    }
 
 void Board::setTurn(char newTurn){
     turn = newTurn;

@@ -75,6 +75,9 @@ int main(){
                     }
                     
                     
+                }else if(command =="undo"){
+                    board->undo();
+                    board->printBoard();
                 }else if(command == "resign"){
                     if(board->getTurn() == 'w'){
                         blackScore++;

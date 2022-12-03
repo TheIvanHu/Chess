@@ -24,6 +24,7 @@ class Piece{
         char getColor() ;
         char getType();
         bool hasMoved();
+        void setMoved(bool m);
 
         virtual bool validMove(coord p, Piece *** grid) = 0;
 };

@@ -41,20 +41,17 @@ char Piece::getType(){
     return type;
 }
 
+void Piece::setMoved(bool m){
+    moved = m;
+}
+
 Rook::Rook(bool w, coord pos): Piece{pos, 'r', w}{
     if(w){
         type = 'R';
     }
 };
 
-bool Rook::validMove(coord p, Piece *** grid){
-    //Check Boundaries
-    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
-    //Make sure one of same players pieces isn't already on that square
-    if(grid[p.x][p.y] && (grid[p.x][p.y]->getColor() == this->getColor())) return false;
-    //Make sure the target square isn't the square the piece is already on
-    if(p.x == pos.x && p.y == pos.y) return false;
-
+bool Rook::validMove(coord p, Piece *** grid){  
     if((p.x == pos.x)){
         for(int c = (min(p.y, pos.y)+1); c < max(p.y, pos.y); c++){
             if(grid[c][p.x]){
@@ -82,13 +79,6 @@ King::King(bool w, coord pos): Piece{pos, 'k', w}{
     }
 };   
 bool King::validMove(coord p, Piece *** grid){
-    //Check Boundaries
-    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
-    //Make sure one of same players pieces isn't already on that square
-    if(grid[p.x][p.y] && grid[p.x][p.y]->getColor() == this->getColor()) return false;
-    //Make sure the target square isn't the square the piece is already on
-    if(p.x == pos.x && p.y == pos.y) return false;
-
     if((p.y == (pos.y + 1)||(p.y == (pos.y - 1)) || (p.y == pos.y)) && (p.x == (pos.x + 1)||(p.x == (pos.x - 1)) || (p.x == pos.x))) return true;
     return false;
 };
@@ -101,13 +91,6 @@ Pawn::Pawn(bool w, coord pos): Piece{pos, 'p', w}{
     }
 };
 bool Pawn::validMove(coord p, Piece *** grid){
-    //Check Boundaries
-    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
-    //Make sure one of same players pieces isn't already on that square
-    if(grid[p.x][p.y] && (grid[p.x][p.y]->getColor() == this->getColor())) return false;
-    //Make sure the target square isn't the square the piece is already on
-    if(p.x == pos.x && p.y == pos.y) return false;
-    
     if(p.x == pos.x){
         if(grid[p.x][p.y]) return false;
         if(isWhite && ((p.y == (pos.y + 1)) || ((p.y == (pos.y + 2)) && (!moved)))) return true;
@@ -128,15 +111,7 @@ Bishop::Bishop(bool w, coord pos): Piece{pos, 'b', w}{
     }
 };
 bool Bishop::validMove(coord p, Piece *** grid){
-     //Check Boundaries
-    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
-    //Make sure one of same players pieces isn't already on that square
-    if(grid[p.x][p.y] && grid[p.x][p.y]->getColor() == this->getColor()) return false;
-    //Make sure the target square isn't the square the piece is already on
-    if(p.x == pos.x && p.y == pos.y) return false;
-
     int d = abs(p.x-pos.x);
-
     if((p.x-pos.x) == (p.y-pos.y)){
         for(int c = 1; c < d; c++){
             if(grid[min(p.x, pos.x) + c][min(p.y, pos.y) + c]){
@@ -163,10 +138,6 @@ Knight::Knight(bool w, coord pos): Piece{pos, 'n', w}{
     }
 };
 bool Knight::validMove(coord p, Piece *** grid){
-    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
-    //Make sure one of same players pieces isn't already on that square
-    if(grid[p.x][p.y] && grid[p.x][p.y]->getColor() == this->getColor()) return false;
-    //Make sure the target square isn't the square the piece is already on
     if((((p.x == (pos.x + 2)) || (p.x == (pos.x - 2))) && ((p.y == (pos.y +1)) || (p.y == (pos.y - 1)))) || 
     (((p.y == (pos.y + 2)) || (p.y == (pos.y - 2))) && ((p.x == (pos.x + 1)) || (p.x == (pos.x - 1))))) return true;
     
@@ -179,13 +150,7 @@ Queen::Queen(bool w, coord pos): Piece{pos, 'q', w}{
     }
 };
 bool Queen::validMove(coord p, Piece *** grid){
-    if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
-    //Make sure one of same players pieces isn't already on that square
-    if(grid[p.x][p.y] && grid[p.x][p.y]->getColor() == this->getColor()) return false;
-    //Make sure the target square isn't the square the piece is already on
-    if(p.x == pos.x && p.y == pos.y) return false;
     //if(abs(p.x-pos.x) != abs(p.y-pos.y)) return false; 
-
     int d = abs(p.x-pos.x);
 
     if((p.x-pos.x) == (p.y-pos.y)){
