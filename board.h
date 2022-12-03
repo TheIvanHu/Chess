@@ -26,7 +26,9 @@ public:
     bool isCheck();
     bool isCheckmate();
     bool isStalemate();
+    void placePiece(char piece, coord c);
     Piece* findKing();
+
     Board();
     ~Board();
 

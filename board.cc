@@ -27,9 +27,13 @@ void Board::setTurn(char turn){
 
 char Board::getState(coord pos){
     Piece* p = grid[pos.x][pos.y];
-    if(p==nullptr){
+    if(p == nullptr && pos.x + pos.x % 2 == 0){
         return '-';
-    }else{
+    }
+    else if(p == nullptr){
+        return ' ';
+    }
+    else{
         return p->getType();
     }
 };
@@ -82,6 +86,14 @@ bool Board::isCheckmate(){
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
             Piece* p = grid[i][j];
+            for(int k = 0; k < 8; k++){
+                for(int l = 0; l < 8; l++){
+                    coord c{k,l};
+                    if(p->validMove(c, grid)){ //check if the move is valid, then check if king is in check after the move
+                        
+                    }
+                }
+            }
         }
     }
 }
@@ -103,12 +115,30 @@ bool Board::isStalemate(){
     return true;
 }
 
+void Board::placePiece(char piece, coord c){
+    if(piece == 'K' || piece == 'k'){
+        board->grid[x][y] = new King(piece == 'K', c);
+    }
+    else if(piece == 'Q' || piece == 'q'){
+        board->grid[x][y] = new Queen(piece == 'Q', c);
+    }
+    else if(piece == 'B' || piece == 'b'){
+        board->grid[x][y] = new Bishop(piece == 'B', c);
+    }
+    else if(piece == 'N' || piece == 'n'){
+        board->grid[x][y] = new Knight(piece == 'N', c);
+    }
+    else if(piece == 'R' || piece == 'r'){
+        board->grid[x][y] = new Rook(piece == 'R', c);
+    }
+    else if(piece == 'P' || piece == 'p'){
+        board->grid[x][y] = new Pawn(piece == 'P', c);
+    }
+}
+
 Board::Board(){
-
     for(int i = 0; i < 8; i++){
-
         grid[i] = new Piece*[8];
-        
     }
 
     whiteTurn = true;
