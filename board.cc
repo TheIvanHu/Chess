@@ -117,22 +117,22 @@ bool Board::isStalemate(){
 
 void Board::placePiece(char piece, coord c){
     if(piece == 'K' || piece == 'k'){
-        board->grid[x][y] = new King(piece == 'K', c);
+        grid[c.x][c.y] = new King(piece == 'K', c);
     }
     else if(piece == 'Q' || piece == 'q'){
-        board->grid[x][y] = new Queen(piece == 'Q', c);
+        grid[c.x][c.y] = new Queen(piece == 'Q', c);
     }
     else if(piece == 'B' || piece == 'b'){
-        board->grid[x][y] = new Bishop(piece == 'B', c);
+        grid[c.x][c.y] = new Bishop(piece == 'B', c);
     }
     else if(piece == 'N' || piece == 'n'){
-        board->grid[x][y] = new Knight(piece == 'N', c);
+        grid[c.x][c.y] = new Knight(piece == 'N', c);
     }
     else if(piece == 'R' || piece == 'r'){
-        board->grid[x][y] = new Rook(piece == 'R', c);
+        grid[c.x][c.y] = new Rook(piece == 'R', c);
     }
     else if(piece == 'P' || piece == 'p'){
-        board->grid[x][y] = new Pawn(piece == 'P', c);
+        grid[c.x][c.y] = new Pawn(piece == 'P', c);
     }
 }
 
