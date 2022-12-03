@@ -75,26 +75,18 @@ int main(){
                     string pos;
                     int x, y;
                     cin >> piece >> pos;
-                    
                     x = pos.at(0) - 'a';
                     y = pos.at(1) - '1';
-                    if(piece == 'K' || piece == 'k'){
-                        board->grid[x][y] = new King(piece == 'K', coord{x,y});
-                    }else if(piece == 'Q' || piece == 'q'){
-                        board->grid[x][y] = new Queen(piece <= 90 && piece >= 65, coord{x,y});
-                    }else if(piece == 'B' || piece == 'b'){
-                        board->grid[x][y] = new Bishop(piece <= 90 && piece >= 65, coord{x,y});
-                    }else if(piece == 'N' || piece == 'n'){
-                        board->grid[x][y] = new Knight(piece <= 90 && piece >= 65, coord{x,y});
-                    }else if(piece == 'R' || piece == 'r'){
-                        board->grid[x][y] = new Rook(piece <= 90 && piece >= 65, coord{x,y});
-                    }else if(piece == 'P' || piece == 'p'){
-                        board->grid[x][y] = new Pawn(piece <= 90 && piece >= 65, coord{x,y});
-                    }
-
+                    board->placePiece(piece,coord{x,y});
+                    board->printBoard();
                 }else if(command == "-"){
-                    string coord;
-                    cin >> coord;
+                    string pos;
+                    int x, y;
+                    cin >> pos;
+                    x = pos.at(0) - 'a';
+                    y = pos.at(1) - '1';
+                    board->removePiece(coord{x,y});
+                    board->printBoard();
                 }else if(command == "="){
                     string colour;
                     cin >> colour;
@@ -104,6 +96,7 @@ int main(){
                         whiteTurn = true;
                     }
                 }else if(command == "done"){
+                    board->printBoard();
                     break;
                 }
             }
