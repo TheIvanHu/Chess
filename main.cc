@@ -6,9 +6,7 @@
 
 using namespace std;
 
-Board* defaultBoard(){
-
-    Board *b = new Board;
+Board* defaultBoard(Board* b){
 
     for(int i = 0; i < 8; i ++){
         b->placePiece('p', coord{i,6});
@@ -37,36 +35,49 @@ Board* defaultBoard(){
 }
 
 int main(){
-    Board *board;
+    bool whiteTurn = true;
+    
+    Board *board = new Board;
     vector<Observer *> obs;
-    board = defaultBoard();
     TextObserver * newOb = new TextObserver(board);
     board->attach(newOb);
     obs.emplace_back(newOb);
-    bool whiteTurn = true;
-
+    
     string command;
     
     while(cin >> command){ //command loop
-    
+        bool setBoard = false;  //if the board has been setup
         if(command == "game"){
             string p1; //white
             string p2; //black
-            
+            if(!setBoard){
+                board = defaultBoard(board);
+                bool whiteTurn = true;
+            }
             board->printBoard();
 
-
             cin >> p1 >> p2;
+
             while(cin >> command){   //game loop
                 if(command == "move"){
                     string start;
                     string end;
                     cin >> start >> end;
+                    try{
+                        board->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
+                                    coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts 
+                                    whiteTurn = !whiteTurn;                         //switch turns if no error
+                    }catch(string error){
+                        cout << error << endl;
+                    }
+                    
+                    
                 }else if(command == "resign"){
                 
                 } 
             }
         }else if(command == "setup"){
+            bool setBoard = true;
             while(cin >> command){   //setup loop
                 if(command == "+"){
                     char piece;
