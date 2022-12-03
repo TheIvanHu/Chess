@@ -36,7 +36,10 @@ Board* defaultBoard(Board* b){
 
 int main(){
     bool whiteTurn = true;
-    
+    int whiteWins;
+    int blackWins;
+    int draws;
+
     Board *board = new Board;
     vector<Observer *> obs;
     TextObserver * newOb = new TextObserver(board);
@@ -45,11 +48,11 @@ int main(){
     
     string command;
     
-    while(cin >> command){ //command loop
-        bool setBoard = false;  //if the board has been setup
+    while(cin >> command){          //command loop
+        bool setBoard = false;      //if the board has been setup
         if(command == "game"){
-            string p1; //white
-            string p2; //black
+            string p1;              //white
+            string p2;              //black
             if(!setBoard){
                 board = defaultBoard(board);
                 bool whiteTurn = true;
@@ -65,7 +68,7 @@ int main(){
                     cin >> start >> end;
                     try{
                         board->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
-                                    coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts 
+                                    coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
                                     whiteTurn = !whiteTurn;                         //switch turns if no error
                     }catch(string error){
                         cout << error << endl;
@@ -73,7 +76,11 @@ int main(){
                     
                     
                 }else if(command == "resign"){
-                
+                    if(whiteTurn){
+                        blackWins++;
+                    }else{
+                        whiteWins++;
+                    }
                 } 
             }
         }else if(command == "setup"){
@@ -82,19 +89,16 @@ int main(){
                 if(command == "+"){
                     char piece;
                     string pos;
-                    int x, y;
                     cin >> piece >> pos;
-                    x = pos.at(0) - 'a';
-                    y = pos.at(1) - '1';
-                    board->placePiece(piece,coord{x,y});
+
+                    board->placePiece(piece,coord{pos.at(0) - 'a',
+                                                  pos.at(1) - '1'});
                     board->printBoard();
                 }else if(command == "-"){
                     string pos;
-                    int x, y;
                     cin >> pos;
-                    x = pos.at(0) - 'a';
-                    y = pos.at(1) - '1';
-                    board->removePiece(coord{x,y});
+                    board->removePiece(coord{pos.at(0) - 'a',
+                                             pos.at(1) - '1'});
                     board->printBoard();
                 }else if(command == "="){
                     string colour;
@@ -114,4 +118,7 @@ int main(){
 
     }
 
+    double whiteScore = whiteWins + 0.5 * draws;
+    double blackScore = blackWins + 0.5 * draws;
+    cout << "Final Score:" << endl << "White: " << whiteScore << endl << "Black: " << blackScore;
 }
