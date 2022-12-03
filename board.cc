@@ -22,20 +22,61 @@ void Board::move(coord start, coord end){
     if((p2 && (p2->getColor() == p1->getColor()))){
         throw std::string("Space is already occupied by one of your pieces.");
     }
+
+    bool castle = false;
+    
+    if((p1->getType() == 'k') || (p1->getType() == 'K')){
+        if(end.x == (start.x + 2)){
+            try{
+                //check for check in the middle
+                this->move(start, coord{start.x + 1, start.y});
+                this->undo();
+                castle = true;                
+            }  
+            catch(std::string error){throw error;}
+        }
+        if(end.x == (start.x - 2)){
+            try{
+                //check for check in the middle
+                this->move(start, coord{start.x - 1, start.y});
+                this->undo();
+                castle = true;                
+            }  
+            catch(std::string error){throw error;}
+        }
+    }
+
     p1->move(end);
     grid[end.x][end.y] = p1;
     grid[start.x][start.y] = nullptr;
     if(p2 == nullptr){
-        Move m{!p1->hasMoved(), start, end, false};
+        Move m{!p1->hasMoved(), start, end, false, castle};
         moves.emplace_back(m);
     }
     else{
         captured.emplace_back(p2);
-        Move m{!p1->hasMoved(), start, end, true};
+        Move m{!p1->hasMoved(), start, end, true, castle};
         moves.emplace_back(m);
     }
     if(!p1->hasMoved()) p1->setMoved(true);
     
+    if(castle){
+        if(end.x == (start.x + 2)){
+            p2 = grid[7][start.y];
+            p2->move(coord{5,start.y});
+            grid[5][start.y] = p2;
+            grid[7][start.y] = nullptr;
+            p2->setMoved(true);
+        }
+        if(end.x == (start.x - 2)){
+            p2 = grid[0][start.y];
+            p2->move(coord{3,start.y});
+            grid[3][start.y] = p2;
+            grid[0][start.y] = nullptr;
+            p2->setMoved(true);
+        }
+    }
+
     if(this->getTurn() == 'w') this->setTurn('b');
     else this->setTurn('w');
     
@@ -58,7 +99,6 @@ void Board::undo(){
     }
     grid[m.start.x][m.start.y] = p1;
     p1->move(m.start);
-    
     if(m.capture){
         Piece* p2 = captured.at(captured.size() - 1);
         captured.pop_back();
@@ -66,7 +106,25 @@ void Board::undo(){
     } else{
         grid[m.end.x][m.end.y] = nullptr;
     }
-    
+
+    if(m.castle){
+        if(m.end.x == 6){
+            Piece * p2 =grid[5][m.start.y];
+
+            p2->setMoved(false);
+            p2->move(coord{7, m.start.y});
+            grid[7][m.start.y] = p2;
+            grid[5][m.start.y] = nullptr; 
+        }
+        if(m.end.x == 2){
+            Piece * p2 =grid[3][m.start.y];
+            
+            p2->setMoved(false);
+            p2->move(coord{0, m.start.y});
+            grid[0][m.start.y] = p2;
+            grid[3][m.start.y] = nullptr; 
+        }
+    }
     if(turn == 'w') turn = 'b';
     else turn = 'w';
     }
@@ -238,6 +296,7 @@ bool Board::setupCheck(){
 void Board::resetBoard(){
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
+            if(grid[i][j]) delete(grid[i][j]);
             grid[i][j] = nullptr;
         }
     }

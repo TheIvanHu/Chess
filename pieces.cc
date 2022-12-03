@@ -58,10 +58,10 @@ bool Rook::validMove(coord p, Piece *** grid){
     if(grid[p.x][p.y] && (grid[p.x][p.y]->getColor() == this->getColor())) return false;
     //Make sure the target square isn't the square the piece is already on
     if(p.x == pos.x && p.y == pos.y) return false;
-
+    
     if((p.x == pos.x)){
         for(int c = (min(p.y, pos.y)+1); c < max(p.y, pos.y); c++){
-            if(grid[c][p.x]){
+            if(grid[p.x][c]){
                 return false;
             }
         }
@@ -70,7 +70,7 @@ bool Rook::validMove(coord p, Piece *** grid){
 
     if((p.y == pos.y)){
         for(int c = (min(p.x, pos.x)+1); c < max(p.x, pos.x); c++){
-            if(grid[p.y][c]){
+            if(grid[c][p.y]){
                 return false;
             }
         }
@@ -79,7 +79,11 @@ bool Rook::validMove(coord p, Piece *** grid){
     return false;
 }
         
-void Rook::castle(){};
+void Rook::castle(){
+
+    
+};
+
 King::King(bool w, coord pos): Piece{pos, 'k', w}{
         if(w){
         type = 'K';
@@ -94,9 +98,15 @@ bool King::validMove(coord p, Piece *** grid){
     if(p.x == pos.x && p.y == pos.y) return false;
 
     if((p.y == (pos.y + 1)||(p.y == (pos.y - 1)) || (p.y == pos.y)) && (p.x == (pos.x + 1)||(p.x == (pos.x - 1)) || (p.x == pos.x))) return true;
+
+    if(!moved && (p.y == (pos.y)) && !grid[p.x][p.y]){
+        if(((p.x == (pos.x + 2)) && !grid[pos.x + 1][pos.y]) && grid[7][pos.y] && !grid[7][pos.y]->hasMoved()) return true;
+        if((p.x == (pos.x - 2)) && !grid[pos.x - 1][pos.y] && !grid[pos.x - 3][pos.y] && grid[0][pos.y] && !grid[0][pos.y]->hasMoved()) return true;
+    }
     return false;
 };
-void King::castle(){};
+void King::castle(){
+};
 
 
 Pawn::Pawn(bool w, coord pos): Piece{pos, 'p', w}{
@@ -111,8 +121,9 @@ bool Pawn::validMove(coord p, Piece *** grid){
     if(grid[p.x][p.y] && (grid[p.x][p.y]->getColor() == this->getColor())) return false;
     //Make sure the target square isn't the square the piece is already on
     if(p.x == pos.x && p.y == pos.y) return false;
-    
     if(p.x == pos.x){
+        
+
         if(grid[p.x][p.y]) return false;
         if(isWhite && ((p.y == (pos.y + 1)) || ((p.y == (pos.y + 2)) && (!moved)))) return true;
         if(!isWhite && ((p.y == (pos.y - 1)) || ((p.y == (pos.y - 2)) && (!moved)))) return true;
