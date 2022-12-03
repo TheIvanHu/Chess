@@ -223,11 +223,10 @@ bool Board::setupCheck(){
         for(int j = 0; j < 8; j++){
             if(grid[i][j] != nullptr){
                 char piece = grid[i][j]->getType();
-                if(piece == 'p' && j == 0) return false;
-                else if(piece == 'P' && j == 7) return false;
-                else if(piece == 'K' && !whiteKing) whiteKing = true;
+                if((piece == 'p' || piece == 'P') && (j == 0 || j == 7)) return false; //pawn on 1st or 8th rank
+                else if(piece == 'K' && !whiteKing) whiteKing = true; //find kings
                 else if(piece == 'k' && !blackKing) blackKing = true;
-                else if(piece == 'K' && whiteKing) return false;
+                else if(piece == 'K' && whiteKing) return false; //more than one king
                 else if(piece == 'k' && blackKing) return false;
             }
         }
