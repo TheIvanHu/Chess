@@ -29,11 +29,13 @@ public:
     void printBoard();
     bool isCheck(char color);
     bool isCheckmate(char color);
-    bool isStalemate();
+    bool isStalemate(char color);
     void placePiece(char piece, coord c);
     void removePiece(coord c);
     void clearBoard();
     char getTurn();
+    bool setupCheck();
+    void resetBoard();
 
     Piece* findKing(char color);
 

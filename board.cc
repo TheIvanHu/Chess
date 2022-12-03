@@ -43,16 +43,6 @@ void Board::move(coord start, coord end){
         this->undo();
         throw std::string("This leaves your king in check.");
     }
-    // if(this->isStalemate()){
-
-    // }
-    // else if(this->isCheckmate()){
-        
-    // }
-    // if(this->isCheck()){
-    //     if(turn == 'w') std::cout << "White is in check.";
-    //     else std::cout << "Black is in check";
-    // }
     
 };
 
@@ -139,7 +129,6 @@ bool Board::isCheck(char color){
 }
 
 bool Board::isCheckmate(char color){
-    Piece* king = findKing(color);
     if(!this->isCheck(color)) return false;
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
@@ -160,8 +149,6 @@ bool Board::isCheckmate(char color){
                             catch(std::string error){
 
                             }
-
-                            
                         }
                     }
                 }
@@ -171,15 +158,25 @@ bool Board::isCheckmate(char color){
     return true;
 }
 
-bool Board::isStalemate(){
+bool Board::isStalemate(char color){
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
             Piece* p = grid[i][j];
             for(int k = 0; k < 8; k++){
                 for(int l = 0; l < 8; l++){
                     coord c{k,l};
-                    if(p->validMove(c, grid)){
-                        return false;
+                    if(p != nullptr && p->validMove(c, grid)){
+                        try{
+                            this->move(coord{i,j}, c);
+                            if(!this->isCheck(color)){
+                                this->undo();                        
+                                return false;
+                            }
+                            this->undo();
+                        }
+                        catch(std::string error){
+
+                        }
                     }
                 }
             }
@@ -218,6 +215,33 @@ void Board::removePiece(coord c){
 
 char Board::getTurn(){
     return turn;
+}
+
+bool Board::setupCheck(){
+    bool blackKing = false, whiteKing = false;
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(grid[i][j] != nullptr){
+                char piece = grid[i][j]->getType();
+                if(piece == 'p' && j == 0) return false;
+                else if(piece == 'P' && j == 7) return false;
+                else if(piece == 'K' && !whiteKing) whiteKing = true;
+                else if(piece == 'k' && !blackKing) blackKing = true;
+                else if(piece == 'K' && whiteKing) return false;
+                else if(piece == 'k' && blackKing) return false;
+            }
+        }
+    }
+    if(whiteKing && blackKing && !this->isCheck('w') && !this->isCheck('b')) return true;
+    return false;
+}
+
+void Board::resetBoard(){
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            grid[i][j] = nullptr;
+        }
+    }
 }
 
 Board::Board(){

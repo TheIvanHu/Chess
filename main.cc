@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Board* defaultBoard(Board* b){
+void setDefaultBoard(Board* b){
 
     for(int i = 0; i < 8; i ++){
         b->placePiece('p', coord{i,6});
@@ -31,7 +31,6 @@ Board* defaultBoard(Board* b){
     b->placePiece('N', coord{6,0});
     b->placePiece('R', coord{7,0});
     
-    return b;
 }
 
 int main(){
@@ -43,16 +42,15 @@ int main(){
     TextObserver * newOb = new TextObserver(board);
     board->attach(newOb);
     obs.emplace_back(newOb);
-    
+    bool setBoard = false;      //if the board has been setup
     string command;
     
     while(cin >> command){          //command loop
-        bool setBoard = false;      //if the board has been setup
         if(command == "game"){
             string p1;              //white
             string p2;              //black
             if(!setBoard){
-                board = defaultBoard(board);
+                setDefaultBoard(board);
                 board->setTurn('w');
             }
             board->printBoard();
@@ -69,7 +67,6 @@ int main(){
                     try{
                         board->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
                                     coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
-                    
                         board->printBoard();           
                     }catch(string error){
                         cout << error << endl;
@@ -86,6 +83,19 @@ int main(){
                         cout << "SCORE" << endl;
                         cout << "White: " << whiteScore << endl;
                         cout << "Black: " << blackScore << endl;
+                        board->resetBoard();
+                        setDefaultBoard(board);
+                        break;
+                    }
+                    else if(board->isStalemate(board->getTurn())){
+                        cout << "Stalemate!" << endl;
+                        whiteScore += 0.5;
+                        blackScore += 0.5;
+                        cout << "SCORE" << endl;
+                        cout << "White: " << whiteScore << endl;
+                        cout << "Black: " << blackScore << endl;
+                        board->resetBoard();
+                        setDefaultBoard(board);
                         break;
                     }
                 }else if(command =="undo"){
@@ -103,11 +113,11 @@ int main(){
                     cout << "White: " << whiteScore << endl;
                     cout << "Black: " << blackScore << endl;
                     break;
-                } 
-                cout << (board->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
+                }
+                cout << (board->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl; 
             }
         }else if(command == "setup"){
-            bool setBoard = true;
+            setBoard = true;
             while(cin >> command){   //setup loop
                 if(command == "+"){
                     char piece;
@@ -133,7 +143,10 @@ int main(){
                     }
                 }else if(command == "done"){
                     board->printBoard();
-                    break;
+                    if(!board->setupCheck()){
+                        cout << "Invalid board setup" << endl;
+                    }
+                    else break;
                 }
             }
         }
@@ -141,5 +154,5 @@ int main(){
 
     }
 
-    cout << "Final Score:" << endl << "White: " << whiteScore << endl << "Black: " << blackScore;
+    cout << "Final Score:" << endl << "White: " << whiteScore << endl << "Black: " << blackScore << endl;
 }
