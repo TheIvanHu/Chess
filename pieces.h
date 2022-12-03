@@ -21,7 +21,7 @@ class Piece{
         
         void move(coord pos);
         coord getPosition();
-        char getColor() ;
+        char getColor();
         char getType();
         bool hasMoved();
         void setMoved(bool m);

@@ -58,33 +58,53 @@ int main(){
             board->printBoard();
 
             cin >> p1 >> p2;
-
+            cout << "White's turn: " <<endl;
             while(cin >> command){   //game loop
+                
                 if(command == "move"){
                     string start;
                     string end;
-                    cin >> start >> end;
+                    cin >> start >> end;    
+                    
                     try{
                         board->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
                                     coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
-                        if(board->getTurn() == 'w') board->setTurn('b');
-                        else board->setTurn('w');
-                        board->printBoard();
+                    
+                        board->printBoard();           
                     }catch(string error){
                         cout << error << endl;
                     }
-                    
-                    
+                   
+                    if(board->isCheckmate(board->getTurn())){
+                        cout << (board->getTurn() == 'w' ? "White" : "Black") << " is in Checkmate" << endl;
+                        cout << (board->getTurn() == 'w' ? "Black" : "White") << " wins." << endl;
+                        if(board->getTurn() == 'w'){
+                            blackScore++;
+                        }else{
+                            whiteScore++;
+                        }
+                        cout << "SCORE" << endl;
+                        cout << "White: " << whiteScore << endl;
+                        cout << "Black: " << blackScore << endl;
+                        break;
+                    }
                 }else if(command =="undo"){
                     board->undo();
                     board->printBoard();
                 }else if(command == "resign"){
+                    cout << (board->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
+                    cout << (board->getTurn() == 'w' ? "Black" : "White") << " wins." << endl;
                     if(board->getTurn() == 'w'){
                         blackScore++;
                     }else{
                         whiteScore++;
                     }
+                    cout << "SCORE" << endl;
+                    cout << "White: " << whiteScore << endl;
+                    cout << "Black: " << blackScore << endl;
+                    break;
                 } 
+                cout << (board->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
             }
         }else if(command == "setup"){
             bool setBoard = true;

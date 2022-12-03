@@ -35,8 +35,14 @@ void Board::move(coord start, coord end){
         moves.emplace_back(m);
     }
     if(!p1->hasMoved()) p1->setMoved(true);
-
-
+    
+    if(this->getTurn() == 'w') this->setTurn('b');
+    else this->setTurn('w');
+    
+    if(this->isCheck(((turn=='w')? 'b':'w'))){
+        this->undo();
+        throw std::string("This leaves your king in check.");
+    }
     // if(this->isStalemate()){
 
     // }
@@ -96,12 +102,12 @@ void Board::printBoard(){
     this->notifyObservers();
 }
 
-Piece* Board::findKing(){
-    if(turn == 'w'){
+Piece* Board::findKing(char color){
+    if(color == 'w'){
         for(int i = 0; i < 8; i++){ //find black king
             for(int j = 0; j < 8; j++){
                 Piece* p = grid[i][j];
-                if(p->getColor() == 'b' && p->getType() == 'k'){
+                if(p && p->getColor() == 'w' && p->getType() == 'K'){
                     return p;
                 }
             }
@@ -111,7 +117,7 @@ Piece* Board::findKing(){
         for(int i = 0; i < 8; i++){ //find white king
             for(int j = 0; j < 8; j++){
                 Piece* p = grid[i][j];
-                if(p->getColor() == 'w' && p->getType() == 'k'){
+                if(p && p->getColor() == 'b' && p->getType() == 'k'){
                     return p;
                 }
             }
@@ -119,12 +125,12 @@ Piece* Board::findKing(){
     }
     return nullptr;
 }
-bool Board::isCheck(){
-    Piece* king = findKing();
+bool Board::isCheck(char color){
+    Piece* king = findKing(color);
     for(int i = 0; i < 8; i++){ //check if anything can "take" the king
         for(int j = 0; j < 8; j++){
             Piece* p = grid[i][j];
-            if(p != king && p->validMove(king->getPosition(), grid)){
+            if(p && p != king && p->validMove(king->getPosition(), grid)){
                 return true;
             }
         }
@@ -132,21 +138,37 @@ bool Board::isCheck(){
     return false;
 }
 
-bool Board::isCheckmate(){
-    Piece* king = findKing();
+bool Board::isCheckmate(char color){
+    Piece* king = findKing(color);
+    if(!this->isCheck(color)) return false;
     for(int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
             Piece* p = grid[i][j];
-            for(int k = 0; k < 8; k++){
-                for(int l = 0; l < 8; l++){
-                    coord c{k,l};
-                    if(p->validMove(c, grid)){ //check if the move is valid, then check if king is in check after the move
-                        
+            if(p && (p->getColor() == color)){
+                for(int k = 0; k < 8; k++){
+                    for(int l = 0; l < 8; l++){
+                        coord c{k,l};
+                        if(p->validMove(c, grid)){ //check if the move is valid, then check if king is in check after the move
+                            try{
+                                this->move(coord{i,j}, c);
+                                if(!this->isCheck(color)){
+                                    this->undo();                        
+                                    return false;
+                                }
+                                this->undo();
+                            }
+                            catch(std::string error){
+
+                            }
+
+                            
+                        }
                     }
                 }
             }
         }
     }
+    return true;
 }
 
 bool Board::isStalemate(){
