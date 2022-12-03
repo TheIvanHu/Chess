@@ -151,6 +151,10 @@ void Board::removePiece(coord c){
     }
 }
 
+char Board::getTurn(){
+    return turn;
+}
+
 Board::Board(){
     for(int i = 0; i < 8; i++){
         grid[i] = new Piece*[8];

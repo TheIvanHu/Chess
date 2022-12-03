@@ -35,8 +35,6 @@ Board* defaultBoard(Board* b){
 }
 
 int main(){
-    bool whiteTurn = true;
-
     double whiteScore = 0;
     double blackScore = 0;
 
@@ -55,7 +53,7 @@ int main(){
             string p2;              //black
             if(!setBoard){
                 board = defaultBoard(board);
-                bool whiteTurn = true;
+                board->setTurn('w');
             }
             board->printBoard();
 
@@ -69,9 +67,8 @@ int main(){
                     try{
                         board->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
                                     coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
-                        if(whiteTurn) board->setTurn('b');
+                        if(board->getTurn() == 'w') board->setTurn('b');
                         else board->setTurn('w');
-                        whiteTurn = !whiteTurn;                         //switch turns if no error
                         board->printBoard();
                     }catch(string error){
                         cout << error << endl;
@@ -79,7 +76,7 @@ int main(){
                     
                     
                 }else if(command == "resign"){
-                    if(whiteTurn){
+                    if(board->getTurn() == 'w'){
                         blackScore++;
                     }else{
                         whiteScore++;
@@ -107,9 +104,9 @@ int main(){
                     string colour;
                     cin >> colour;
                     if(colour == "black" || colour == "b" || colour == "B"){
-                        whiteTurn = false;
+                        board->setTurn('b');
                     }else if(colour == "white" || colour == "w" || colour == "W"){
-                        whiteTurn = true;
+                        board->setTurn('w');
                     }
                 }else if(command == "done"){
                     board->printBoard();

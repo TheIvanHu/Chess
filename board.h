@@ -30,6 +30,7 @@ public:
     void placePiece(char piece, coord c);
     void removePiece(coord c);
     void clearBoard();
+    char getTurn();
     Piece* findKing();
 
     Board();
