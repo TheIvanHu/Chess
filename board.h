@@ -6,15 +6,19 @@ class Piece;
 struct coord;
 
 struct Move{
-    //first move of the moving piece
-    bool firstMove;
-    
+    //If this is the first move of the moving piece
+    bool firstMove; 
+    coord startMove;
+    coord endMove;
+    bool capture;
 };
+
 class Board : public Subject {
     bool whiteTurn;
     int whiteWins;
     int blackWins;
     int draws;
+    
 public:
     Piece** grid[8];
     
