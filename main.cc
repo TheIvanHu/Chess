@@ -73,8 +73,7 @@ int main(){
                     }
                    
                     if(board->isCheckmate(board->getTurn())){
-                        cout << (board->getTurn() == 'w' ? "White" : "Black") << " is in Checkmate" << endl;
-                        cout << (board->getTurn() == 'w' ? "Black" : "White") << " wins." << endl;
+                        cout << "Checkmate! " << (board->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
                         if(board->getTurn() == 'w'){
                             blackScore++;
                         }else{
@@ -103,7 +102,7 @@ int main(){
                     board->printBoard();
                 }else if(command == "resign"){
                     cout << (board->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (board->getTurn() == 'w' ? "Black" : "White") << " wins." << endl;
+                    cout << (board->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
                     if(board->getTurn() == 'w'){
                         blackScore++;
                     }else{

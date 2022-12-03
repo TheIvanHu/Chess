@@ -241,6 +241,7 @@ void Board::resetBoard(){
             grid[i][j] = nullptr;
         }
     }
+    turn = 'w';
 }
 
 Board::Board(){
