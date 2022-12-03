@@ -27,7 +27,7 @@ void Board::setTurn(char turn){
 
 char Board::getState(coord pos){
     Piece* p = grid[pos.x][pos.y];
-    if(p == nullptr && pos.x + pos.y % 2 == 0){
+    if(p == nullptr && (pos.x + pos.y) % 2 == 0){
         return '-';
     }
     else if(p == nullptr){
