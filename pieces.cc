@@ -51,7 +51,7 @@ bool Rook::validMove(coord p, Piece *** grid){
     //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
     //Make sure one of same players pieces isn't already on that square
-    if(grid[p.y][p.x] && grid[p.y][p.x]->getColor() == this->getColor()) return false;
+    if(grid[p.x][p.y] && (grid[p.x][p.y]->getColor() == this->getColor())) return false;
     //Make sure the target square isn't the square the piece is already on
     if(p.x == pos.x && p.y == pos.y) return false;
 
@@ -85,7 +85,7 @@ bool King::validMove(coord p, Piece *** grid){
     //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
     //Make sure one of same players pieces isn't already on that square
-    if(grid[p.y][p.x] && grid[p.y][p.x]->getColor() == this->getColor()) return false;
+    if(grid[p.x][p.y] && grid[p.x][p.y]->getColor() == this->getColor()) return false;
     //Make sure the target square isn't the square the piece is already on
     if(p.x == pos.x && p.y == pos.y) return false;
 
@@ -104,19 +104,19 @@ bool Pawn::validMove(coord p, Piece *** grid){
     //Check Boundaries
     if((p.x < 0) || (p.x > 7) || (p.y < 0) || (p.y > 7)) return false;
     //Make sure one of same players pieces isn't already on that square
-    if(grid[p.x][p.y] && grid[p.x][p.y]->getColor() == this->getColor()) return false;
+    if(grid[p.x][p.y] && (grid[p.x][p.y]->getColor() == this->getColor())) return false;
     //Make sure the target square isn't the square the piece is already on
     if(p.x == pos.x && p.y == pos.y) return false;
     
     if(p.x == pos.x){
         if(grid[p.x][p.y]) return false;
-        if(isWhite && ((p.x == (pos.x + 1)) || ((p.x == (pos.x + 2)) && (!moved)))) return true;
-        if(!isWhite && ((p.x == (pos.x - 1)) || ((p.x == (pos.x - 2)) && (!moved)))) return true;
+        if(isWhite && ((p.y == (pos.y + 1)) || ((p.y == (pos.y + 2)) && (!moved)))) return true;
+        if(!isWhite && ((p.y == (pos.y - 1)) || ((p.y == (pos.y - 2)) && (!moved)))) return true;
     }
     //capture
     if(grid[p.x][p.y]){
-        if(isWhite && (p.x == (pos.x + 1)) && ((p.y == (pos.y + 1) || (p.y == (pos.y - 1))))) return true;
-        if(!isWhite && (p.x == (pos.x - 1)) && ((p.y == (pos.y + 1) || (p.y == (pos.y - 1))))) return true;
+        if(isWhite && (p.y == (pos.y + 1)) && ((p.x == (pos.x + 1) || (p.x == (pos.x - 1))))) return true;
+        if(!isWhite && (p.y == (pos.y - 1)) && ((p.x == (pos.x + 1) || (p.x == (pos.x - 1))))) return true;
     }
     return false;    
 };

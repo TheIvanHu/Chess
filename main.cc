@@ -69,7 +69,10 @@ int main(){
                     try{
                         board->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
                                     coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
-                                    whiteTurn = !whiteTurn;                         //switch turns if no error
+                        if(whiteTurn) board->setTurn('b');
+                        else board->setTurn('w');
+                        whiteTurn = !whiteTurn;                         //switch turns if no error
+                        board->printBoard();
                     }catch(string error){
                         cout << error << endl;
                     }
@@ -77,9 +80,9 @@ int main(){
                     
                 }else if(command == "resign"){
                     if(whiteTurn){
-                        blackWins++;
+                        blackScore++;
                     }else{
-                        whiteWins++;
+                        whiteScore++;
                     }
                 } 
             }

@@ -4,10 +4,10 @@
 #include <iostream>
 
 void Board::move(coord start, coord end){
-    Piece* p1 = grid[start.y][start.x];
-    Piece* p2 = grid[start.y][start.x];
-    if(p1 == nullptr || start.y <= -1 || start.y >= 8 || start.x <= -1 || start.x >= 8 || 
-       ((start.x == end.x) && (start.y == end.y)) || !p1->validMove(end, grid)){
+    Piece* p1 = grid[start.x][start.y];
+    Piece* p2 = grid[start.x][start.y];
+    if(p1 == nullptr || start.y < 0 || start.y > 7 || start.x < 0 || start.x > 7 || 
+       ((start.x == end.x) && (start.y == end.y)) || !p1->validMove(end, grid) || p1->getColor() != turn){
         throw std::string("Invalid move."); //make error type
     }
     else if(p2 == nullptr){
@@ -19,10 +19,21 @@ void Board::move(coord start, coord end){
         grid[end.x][end.y] = p1;
         grid[start.x][start.y] = nullptr;
     }
+    // if(this->isStalemate()){
+
+    // }
+    // else if(this->isCheckmate()){
+        
+    // }
+    // if(this->isCheck()){
+    //     if(turn == 'w') std::cout << "White is in check.";
+    //     else std::cout << "Black is in check";
+    // }
+    
 };
 
-void Board::setTurn(char turn){
-    whiteTurn = turn;
+void Board::setTurn(char newTurn){
+    turn = newTurn;
 };
 
 char Board::getState(coord pos){
@@ -41,13 +52,9 @@ char Board::getState(coord pos){
 void Board::printBoard(){
     this->notifyObservers();
 }
-void Board::printResult(){
-    double whiteScore = whiteWins + 0.5 * draws;
-    double blackScore = blackWins + 0.5 * draws;
-    std::cout << "Final Score:" << std::endl << "White: " << whiteScore << std::endl << "Black: " << blackScore;
-};
+
 Piece* Board::findKing(){
-    if(whiteTurn){
+    if(turn == 'w'){
         for(int i = 0; i < 8; i++){ //find black king
             for(int j = 0; j < 8; j++){
                 Piece* p = grid[i][j];
@@ -141,8 +148,6 @@ void Board::removePiece(coord c){
     if(grid[c.x][c.y]){
         delete grid[c.x][c.y];
         grid[c.x][c.y] = nullptr;
-    }else{
-
     }
 }
 
@@ -151,10 +156,7 @@ Board::Board(){
         grid[i] = new Piece*[8];
     }
 
-    whiteTurn = true;
-    whiteWins = 0;
-    blackWins = 0;
-    draws = 0;
+    turn = 'w';
 };
 Board::~Board(){
     for(int i = 0; i < 8; i++){
