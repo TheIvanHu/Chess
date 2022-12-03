@@ -27,6 +27,7 @@ public:
     bool isCheckmate();
     bool isStalemate();
     void placePiece(char piece, coord c);
+    void removePiece(coord c);
     Piece* findKing();
 
     Board();

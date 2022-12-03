@@ -27,8 +27,8 @@ void Board::setTurn(char turn){
 
 char Board::getState(coord pos){
     Piece* p = grid[pos.x][pos.y];
-    if(p == nullptr && pos.x + pos.x % 2 == 0){
-        return '-';
+    if(p == nullptr && (pos.x + pos.y) % 2 == 0){
+        return '_';
     }
     else if(p == nullptr){
         return ' ';
@@ -67,6 +67,7 @@ Piece* Board::findKing(){
             }
         }
     }
+    return nullptr;
 }
 bool Board::isCheck(){
     Piece* king = findKing();
@@ -133,6 +134,15 @@ void Board::placePiece(char piece, coord c){
     }
     else if(piece == 'P' || piece == 'p'){
         grid[c.x][c.y] = new Pawn(piece == 'P', c);
+    }
+}
+
+void Board::removePiece(coord c){
+    if(grid[c.x][c.y]){
+        delete grid[c.x][c.y];
+        grid[c.x][c.y] = nullptr;
+    }else{
+
     }
 }
 

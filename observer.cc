@@ -19,7 +19,7 @@ void TextObserver::notify(){
         }
         out << std::endl;
     }
-    out << "  abcdefgh";
+    out << "  abcdefgh" << std::endl;
 }
 
 void GraphicalObserver::notify(){
