@@ -15,9 +15,7 @@ void TextObserver::notify(){
             coord p;
             p.x = j;
             p.y = i;
-        
             out << subject->getState(p);
-            
         }
         out << std::endl;
     }

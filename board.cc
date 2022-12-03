@@ -104,14 +104,13 @@ bool Board::isStalemate(){
 }
 
 Board::Board(){
+
     for(int i = 0; i < 8; i++){
+
         grid[i] = new Piece*[8];
+        
     }
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
-            grid[i][j] = nullptr;
-        }
-    }
+
     whiteTurn = true;
     whiteWins = 0;
     blackWins = 0;
