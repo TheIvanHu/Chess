@@ -37,7 +37,7 @@ void setDefaultBoard(Board* b){
 int main(){
     double whiteScore = 0;
     double blackScore = 0;
-
+    int count = 0;
     Board *board = new Board;
     vector<Observer *> obs;
     TextObserver * newOb = new TextObserver(board);
@@ -85,6 +85,8 @@ int main(){
             cout << "White's turn: " <<endl;
             curPlayer = p1;
             while(curPlayer->move(whiteScore, blackScore)){   //game loop
+            count++;
+            cout << count << endl;
                 if(curPlayer == p1){
                     curPlayer = p2;
                 }else{

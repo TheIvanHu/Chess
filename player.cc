@@ -125,6 +125,7 @@ bool Computer1::move(double whiteScore, double blackScore){
 
     b->printBoard();           
     cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
+    cout << m << endl;
     return true;
     }
 }
