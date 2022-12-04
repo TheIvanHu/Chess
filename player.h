@@ -13,18 +13,18 @@ class Player{
         Board* b;
         Player(Board* b);
         virtual ~Player(){};
-        virtual bool move(double whiteScore, double blackScore) = 0;
+        virtual bool move(double &whiteScore, double &blackScore) = 0;
 };
 class Human : public Player{
     public:
-        bool move(double whiteScore, double blackScore);
+        bool move(double &whiteScore, double &blackScore);
         Human(Board* b);
 };
 
 class Computer1 : public Player{
 
     public:
-        bool move(double whiteScore, double blackScore);
+        bool move(double &whiteScore, double &blackScore);
         Computer1(Board* b);
 
 };
@@ -32,16 +32,16 @@ class Computer1 : public Player{
 class Computer2 : public Player{
     std::vector<std::string> captureCheckMoves;
     public:
-        bool move(double whiteScore, double blackScore);
+        bool move(double &whiteScore, double &blackScore);
 };
 
 class Computer3 : public Player{
     public:
-        bool move(double whiteScore, double blackScore);
+        bool move(double &whiteScore, double &blackScore);
 };
 
 class Computer4 : public Player{
     public:
-        bool move(double whiteScore, double blackScore);
+        bool move(double &whiteScore, double &blackScore);
 };
 #endif

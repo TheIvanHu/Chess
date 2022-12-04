@@ -51,8 +51,7 @@ void Board::move(coord start, coord end){
 
     if(((p1->getType() == 'p') || (p1->getType() == 'P')) && ((end.y == 0) || (end.y == 7))){
         promote = true;
-        char p;
-        std::cin >> p;
+        char p = 'q';
         captured.emplace_back(p1);
         
         if(p == 'Q' || p == 'q'){
@@ -78,7 +77,7 @@ void Board::move(coord start, coord end){
                 enpassant = true;
             }
             else{
-                throw("Invalid Move.");
+                throw std::string("Invalid Move.");
             }
         }
     }
@@ -380,7 +379,7 @@ Board::~Board(){
         }
     }
     for(int i = 0; i < 8; i++){
-        delete grid[i];
+        delete[] grid[i];
     }
 
 };
