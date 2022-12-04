@@ -1,0 +1,16 @@
+game
+human human
+move h2 h4
+move g7 g5
+move h4 g5
+move h7 h6
+move g5 g6
+move h8 h7
+move g6 h7
+move h6 h5
+move h7 h8 b
+undo
+move h7 h8 q 
+move h5 h4 
+move h8 h4
+

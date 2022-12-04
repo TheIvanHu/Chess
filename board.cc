@@ -2,6 +2,7 @@
 #include "subject.h"
 #include "pieces.h"
 #include <iostream>
+#include <cctype>
 
 void Board::move(coord start, coord end){
     Piece* p1 = grid[start.x][start.y];
@@ -24,7 +25,8 @@ void Board::move(coord start, coord end){
     }
 
     bool castle = false;
-    
+    bool promote = false;
+
     if((p1->getType() == 'k') || (p1->getType() == 'K')){
         if(end.x == (start.x + 2)){
             try{
@@ -46,16 +48,38 @@ void Board::move(coord start, coord end){
         }
     }
 
+    if(((p1->getType() == 'p') || (p1->getType() == 'P')) && ((end.y == 0) || (end.y == 7))){
+        promote = true;
+        char p;
+        std::cin >> p;
+        captured.emplace_back(p1);
+        
+        if(p == 'Q' || p == 'q'){
+            p1 = new Queen(turn == 'w', start);
+        }
+        else if(p == 'B' || p == 'b'){
+            p1 = new Bishop(turn == 'w', start);
+        }
+        else if(p == 'N' || p == 'n'){
+            p1 = new Knight(turn == 'w', start);
+        }
+        else if(p == 'R' || p == 'r'){
+            p1 = new Rook(turn == 'w', start);
+        }
+        p1->setMoved(true);
+    }
+
     p1->move(end);
     grid[end.x][end.y] = p1;
     grid[start.x][start.y] = nullptr;
+    //check if capture has happened
     if(p2 == nullptr){
-        Move m{!p1->hasMoved(), start, end, false, castle};
+        Move m{!p1->hasMoved(), start, end, false, castle, promote};
         moves.emplace_back(m);
     }
     else{
         captured.emplace_back(p2);
-        Move m{!p1->hasMoved(), start, end, true, castle};
+        Move m{!p1->hasMoved(), start, end, true, castle, promote};
         moves.emplace_back(m);
     }
     if(!p1->hasMoved()) p1->setMoved(true);
@@ -94,6 +118,12 @@ void Board::undo(){
     moves.pop_back();
 
     Piece* p1 = grid[m.end.x][m.end.y];
+    if(m.promote){
+        delete p1;
+        p1 = captured.at(captured.size() - 1);
+        grid[m.end.x][m.end.y] = p1;
+        captured.pop_back();
+    }
     if(m.firstMove){
         p1->setMoved(false);
     }
@@ -311,7 +341,14 @@ Board::Board(){
     turn = 'w';
 };
 Board::~Board(){
-    for(int i = 0; i < 8; i++){
-        delete [] grid[i];
+    for (auto piece : captured) {
+        delete piece;
     }
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(grid[i][j]) delete(grid[i][j]);
+            grid[i][j] = nullptr;
+        }
+    }
+
 };
