@@ -122,17 +122,17 @@ bool Pawn::validMove(coord p, Piece *** grid){
     //Make sure the target square isn't the square the piece is already on
     if(p.x == pos.x && p.y == pos.y) return false;
     if(p.x == pos.x){
-        
-
         if(grid[p.x][p.y]) return false;
         if(isWhite && ((p.y == (pos.y + 1)) || ((p.y == (pos.y + 2)) && (!moved)))) return true;
         if(!isWhite && ((p.y == (pos.y - 1)) || ((p.y == (pos.y - 2)) && (!moved)))) return true;
     }
-    //capture
-    if(grid[p.x][p.y]){
+    //capture 
+    if((grid[p.x][p.y]) || (grid[p.x][pos.y] && grid[p.x][pos.y]->getColor() != this->getColor() && 
+    (grid[p.x][pos.y]->getType() == 'p' || grid[p.x][pos.y]->getColor() == 'P') && (pos.y == 6 || pos.y == 4))){
         if(isWhite && (p.y == (pos.y + 1)) && ((p.x == (pos.x + 1) || (p.x == (pos.x - 1))))) return true;
         if(!isWhite && (p.y == (pos.y - 1)) && ((p.x == (pos.x + 1) || (p.x == (pos.x - 1))))) return true;
     }
+
     return false;    
 };
 void Pawn::promote(std::string piece){}

@@ -26,6 +26,7 @@ void Board::move(coord start, coord end){
 
     bool castle = false;
     bool promote = false;
+    bool enpassant = false;
 
     if((p1->getType() == 'k') || (p1->getType() == 'K')){
         if(end.x == (start.x + 2)){
@@ -68,18 +69,31 @@ void Board::move(coord start, coord end){
         }
         p1->setMoved(true);
     }
+    //En Passant 
+    if(((p1->getType() == 'p') || (p1->getType() == 'P')) && ((start.x == end.x + 1) || (start.x == end.x - 1) ) &&
+    !grid[end.x][end.y]){
+        if((grid[end.x][start.y])){
+            Move m = moves.at(moves.size() - 1);
+            if(m.firstMove && (m.end.x == end.x) && (m.end.y = start.y)){
+                enpassant = true;
+            }
+            else{
+                throw("Invalid Move.");
+            }
+        }
+    }
 
     p1->move(end);
     grid[end.x][end.y] = p1;
     grid[start.x][start.y] = nullptr;
     //check if capture has happened
     if(p2 == nullptr){
-        Move m{!p1->hasMoved(), start, end, false, castle, promote};
+        Move m{!p1->hasMoved(), start, end, false, castle, promote, enpassant};
         moves.emplace_back(m);
     }
     else{
         captured.emplace_back(p2);
-        Move m{!p1->hasMoved(), start, end, true, castle, promote};
+        Move m{!p1->hasMoved(), start, end, true, castle, promote, enpassant};
         moves.emplace_back(m);
     }
     if(!p1->hasMoved()) p1->setMoved(true);
@@ -99,6 +113,11 @@ void Board::move(coord start, coord end){
             grid[0][start.y] = nullptr;
             p2->setMoved(true);
         }
+    }
+    if(enpassant){
+        p2 = grid[end.x][start.y];
+        captured.emplace_back(p2);
+        grid[end.x][start.y] = nullptr;
     }
 
     if(this->getTurn() == 'w') this->setTurn('b');
@@ -137,6 +156,14 @@ void Board::undo(){
         grid[m.end.x][m.end.y] = nullptr;
     }
 
+    if(m.enpassant){
+
+        Piece * p2 = captured.at(captured.size() - 1);
+        grid[m.end.x][m.start.y] = p2;
+        captured.pop_back();
+    }
+    
+
     if(m.castle){
         if(m.end.x == 6){
             Piece * p2 =grid[5][m.start.y];
@@ -157,7 +184,7 @@ void Board::undo(){
     }
     if(turn == 'w') turn = 'b';
     else turn = 'w';
-    }
+}
 
 void Board::setTurn(char newTurn){
     turn = newTurn;
@@ -234,9 +261,7 @@ bool Board::isCheckmate(char color){
                                 }
                                 this->undo();
                             }
-                            catch(std::string error){
-
-                            }
+                            catch(std::string error){}
                         }
                     }
                 }

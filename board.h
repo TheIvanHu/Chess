@@ -14,6 +14,7 @@ struct Move{
     bool capture;
     bool castle;
     bool promote;
+    bool enpassant;
 };
 
 class Board : public Subject {
@@ -26,18 +27,22 @@ public:
     
     void move(coord start, coord end);
     void undo();
+
     void setTurn(char newTurn);
     char getState(coord pos);
+    
     void printBoard();
     bool isCheck(char color);
     bool isCheckmate(char color);
     bool isStalemate(char color);
+    
     void placePiece(char piece, coord c);
     void removePiece(coord c);
     void clearBoard();
     char getTurn();
     bool setupCheck();
     void resetBoard();
+
 
     Piece* findKing(char color);
 
