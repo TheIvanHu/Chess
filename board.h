@@ -12,6 +12,7 @@ struct Move{
     coord start;
     coord end;
     bool capture;
+    bool castle;
 };
 
 class Board : public Subject {
