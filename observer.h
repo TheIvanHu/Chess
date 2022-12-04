@@ -2,6 +2,7 @@
 #define __OBSERVER_H__
 
 #include <iostream>
+#include "window.h"
 class Subject;
 class Board;
 
@@ -23,6 +24,7 @@ public:
 
 class GraphicalObserver : public Observer {
     Board * subject;
+    Xwindow* x;
 public:
     void notify() override;
     GraphicalObserver(Board * subject);

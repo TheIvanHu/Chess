@@ -41,8 +41,12 @@ int main(){
     Board *board = new Board;
     vector<Observer *> obs;
     TextObserver * newOb = new TextObserver(board);
+    GraphicalObserver* graphOb = new GraphicalObserver(board);
     board->attach(newOb);
+    board->attach(graphOb);
     obs.emplace_back(newOb);
+    obs.emplace_back(graphOb);
+    
     bool setBoard = false;      //if the board has been setup
     string command;
     
