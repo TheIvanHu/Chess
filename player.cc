@@ -1,4 +1,4 @@
-#include "computer.h"
+#include "player.h"
 #include "board.h"
 #include "pieces.h"
 #include <vector>
@@ -27,5 +27,6 @@ void Computer1::move(){
 
     int r = rand() % allValidMoves.size();
     string m = allValidMoves[r];
-    b->move(coord{m.at(0), m.at(1)}, coord{m.at(2), m.at(3)});
+    b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
+            coord{m.at(2) - '0', m.at(3) - '0'});
 }

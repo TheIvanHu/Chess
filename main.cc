@@ -152,6 +152,6 @@ int main(){
 
 
     }
-
+    delete board;
     cout << "Final Score:" << endl << "White: " << whiteScore << endl << "Black: " << blackScore << endl;
 }
