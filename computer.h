@@ -1,9 +1,10 @@
 #ifndef __PIECES_H__
 #define __PIECES_H__
 
+#include <vector>
 #include <string>
 #include "board.h"
-#include <vector>
+#include "pieces.h"
 
 class Computer{
     Board* b;
@@ -17,7 +18,7 @@ class Computer{
         }
 
 class Computer1 : public Computer{
-    
+
     public:
         void move();
 }
