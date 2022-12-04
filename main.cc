@@ -37,15 +37,11 @@ void setDefaultBoard(Board* b){
 int main(){
     double whiteScore = 0;
     double blackScore = 0;
-    int count = 0;
     Board *board = new Board;
     vector<Observer *> obs;
     TextObserver * newOb = new TextObserver(board);
-    GraphicalObserver* graphOb = new GraphicalObserver(board);
     board->attach(newOb);
-    board->attach(graphOb);
     obs.emplace_back(newOb);
-    obs.emplace_back(graphOb);
     
     bool setBoard = false;      //if the board has been setup
     string command;
@@ -89,8 +85,6 @@ int main(){
             cout << "White's turn: " <<endl;
             curPlayer = p1;
             while(curPlayer->move(whiteScore, blackScore)){   //game loop
-            count++;
-            cout << count << endl;
                 if(curPlayer == p1){
                     curPlayer = p2;
                 }else{

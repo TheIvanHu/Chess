@@ -8,7 +8,7 @@
 using namespace std;
 
 
-bool Human::move(double whiteScore, double blackScore){
+bool Human::move(double &whiteScore, double &blackScore){
 
     string command;
     cin >> command;
@@ -69,7 +69,7 @@ bool Human::move(double whiteScore, double blackScore){
                 return true; 
 }
 
-bool Computer1::move(double whiteScore, double blackScore){
+bool Computer1::move(double &whiteScore, double &blackScore){
     string command;
     while(cin >> command){
     if(command == "move"){
@@ -84,7 +84,7 @@ bool Computer1::move(double whiteScore, double blackScore){
                         allValidMoves.push_back(to_string(i) + to_string(j) + to_string(k) + to_string(l));
 
 
-                    }catch(string error){
+                    }catch(std::string error){
                         
                     }
                 }
@@ -92,6 +92,7 @@ bool Computer1::move(double whiteScore, double blackScore){
         }
     }
     if(allValidMoves.size() == 0){
+        b->printBoard();           
         if(b->isCheckmate(b->getTurn())){
                         cout << "Checkmate! " << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
                         if(b->getTurn() == 'w'){
@@ -115,17 +116,18 @@ bool Computer1::move(double whiteScore, double blackScore){
                         b->resetBoard();
                         return false;
                     }
-                    return false;
     }
     srand(time(NULL));
     int r = rand() % allValidMoves.size();
     string m = allValidMoves[r];
+    try{
     b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
             coord{m.at(2) - '0', m.at(3) - '0'});
+    }catch(std::string error){
 
+    }
     b->printBoard();           
     cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
-    cout << m << endl;
     return true;
     }
 }
