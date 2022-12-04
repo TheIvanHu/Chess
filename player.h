@@ -33,6 +33,7 @@ class Computer2 : public Player{
     std::vector<std::string> captureCheckMoves;
     public:
         bool move(double &whiteScore, double &blackScore);
+        Computer2(Board* b);
 };
 
 class Computer3 : public Player{

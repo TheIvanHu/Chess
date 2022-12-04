@@ -64,7 +64,7 @@ int main(){
             }else if(player == "computer1"){
                 p1 = new Computer1(board);
             }else if(player == "computer2"){
-
+                p1 = new Computer2(board);
             }else if(player == "computer3"){
 
             }else if(player == "computer4"){
@@ -76,7 +76,7 @@ int main(){
             }else if(player == "computer1"){
                 p2 = new Computer1(board);
             }else if(player == "computer2"){
-
+                p2 = new Computer2(board);
             }else if(player == "computer3"){
 
             }else if(player == "computer4"){
