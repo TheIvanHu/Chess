@@ -1,41 +1,47 @@
-#ifndef __PIECES_H__
-#define __PIECES_H__
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
 
 #include <vector>
 #include <string>
-#include "board.h"
 #include "pieces.h"
 
+class Board;
+
 class Player{
-    Board* b;
-    vector<string> allValidMoves;  //strings formatted "startcoordsendcoords" ("a4e4")
     public:        
+        std::vector<std::string> allValidMoves;  //strings formatted "startcoordsendcoords" ("a4e4")
+        Board* b;
         Player(Board* b);
         virtual ~Player(){};
-        virtual void move() = 0;
-        
-        
-        };
+        virtual bool move(double whiteScore, double blackScore) = 0;
+};
+class Human : public Player{
+    public:
+        bool move(double whiteScore, double blackScore);
+        Human(Board* b);
+};
 
 class Computer1 : public Player{
 
     public:
-        void move();
+        bool move(double whiteScore, double blackScore);
+        Computer1(Board* b);
+
 };
 
 class Computer2 : public Player{
-    vector<string> captureCheckMoves;
+    std::vector<std::string> captureCheckMoves;
     public:
-        void move();
+        bool move(double whiteScore, double blackScore);
 };
 
 class Computer3 : public Player{
     public:
-        void move();
+        bool move(double whiteScore, double blackScore);
 };
 
 class Computer4 : public Player{
     public:
-        void move();
+        bool move(double whiteScore, double blackScore);
 };
 #endif

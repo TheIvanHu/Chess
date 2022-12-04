@@ -3,6 +3,7 @@
 #include "observer.h"
 #include <iostream>
 #include <vector>
+#include "player.h"
 
 using namespace std;
 
@@ -47,74 +48,52 @@ int main(){
     
     while(cin >> command){          //command loop
         if(command == "game"){
-            string p1;              //white
-            string p2;              //black
+            string player;              
+            Player* p1;              //white
+            Player* p2;              //black
+            Player* curPlayer;
             if(!setBoard){
                 setDefaultBoard(board);
                 board->setTurn('w');
             }
             board->printBoard();
 
-            cin >> p1 >> p2;
-            cout << "White's turn: " <<endl;
-            while(cin >> command){   //game loop
-                
-                if(command == "move"){
-                    string start;
-                    string end;
-                    cin >> start >> end;    
-                    
-                    try{
-                        board->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
-                                    coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
-                        board->printBoard();           
-                    }catch(string error){
-                        cout << error << endl;
-                    }
-                   
-                    if(board->isCheckmate(board->getTurn())){
-                        cout << "Checkmate! " << (board->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                        if(board->getTurn() == 'w'){
-                            blackScore++;
-                        }else{
-                            whiteScore++;
-                        }
-                        cout << "SCORE" << endl;
-                        cout << "White: " << whiteScore << endl;
-                        cout << "Black: " << blackScore << endl;
-                        board->resetBoard();
-                        setDefaultBoard(board);
-                        break;
-                    }
-                    else if(board->isStalemate(board->getTurn())){
-                        cout << "Stalemate!" << endl;
-                        whiteScore += 0.5;
-                        blackScore += 0.5;
-                        cout << "SCORE" << endl;
-                        cout << "White: " << whiteScore << endl;
-                        cout << "Black: " << blackScore << endl;
-                        board->resetBoard();
-                        setDefaultBoard(board);
-                        break;
-                    }
-                }else if(command =="undo"){
-                    board->undo();
-                    board->printBoard();
-                }else if(command == "resign"){
-                    cout << (board->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (board->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                    if(board->getTurn() == 'w'){
-                        blackScore++;
-                    }else{
-                        whiteScore++;
-                    }
-                    cout << "SCORE" << endl;
-                    cout << "White: " << whiteScore << endl;
-                    cout << "Black: " << blackScore << endl;
-                    break;
-                }
-                cout << (board->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl; 
+            cin >> player;
+            if(player == "human"){
+                p1 = new Human(board);
+            }else if(player == "computer1"){
+                p1 = new Computer1(board);
+            }else if(player == "computer2"){
+
+            }else if(player == "computer3"){
+
+            }else if(player == "computer4"){
+
             }
+            cin >> player;
+            if(player == "human"){
+                p2 = new Human(board);
+            }else if(player == "computer1"){
+                p2 = new Computer1(board);
+            }else if(player == "computer2"){
+
+            }else if(player == "computer3"){
+
+            }else if(player == "computer4"){
+
+            }
+            cout << "White's turn: " <<endl;
+            curPlayer = p1;
+            while(curPlayer->move(whiteScore, blackScore)){   //game loop
+                if(curPlayer == p1){
+                    curPlayer = p2;
+                }else{
+                    curPlayer = p1;
+                }
+
+            }
+                delete p1;
+                delete p2;
         }else if(command == "setup"){
             setBoard = true;
             while(cin >> command){   //setup loop
@@ -153,5 +132,6 @@ int main(){
 
     }
     delete board;
+
     cout << "Final Score:" << endl << "White: " << whiteScore << endl << "Black: " << blackScore << endl;
 }

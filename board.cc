@@ -184,7 +184,7 @@ void Board::undo(){
     }
     if(turn == 'w') turn = 'b';
     else turn = 'w';
-}
+    }
 
 void Board::setTurn(char newTurn){
     turn = newTurn;
@@ -192,10 +192,10 @@ void Board::setTurn(char newTurn){
 
 char Board::getState(coord pos){
     Piece* p = grid[pos.x][pos.y];
-    if(p == nullptr && (pos.x + pos.y) % 2 == 0){
+    if(!p && (pos.x + pos.y) % 2 == 0){
         return '_';
     }
-    else if(p == nullptr){
+    else if(!p){
         return ' ';
     }
     else{
@@ -362,7 +362,11 @@ Board::Board(){
     for(int i = 0; i < 8; i++){
         grid[i] = new Piece*[8];
     }
-
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            grid[i][j] = nullptr;
+    }
+    }
     turn = 'w';
 };
 Board::~Board(){
@@ -374,6 +378,9 @@ Board::~Board(){
             if(grid[i][j]) delete(grid[i][j]);
             grid[i][j] = nullptr;
         }
+    }
+    for(int i = 0; i < 8; i++){
+        delete grid[i];
     }
 
 };
