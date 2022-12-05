@@ -38,7 +38,7 @@ bool checkEnd(double &whiteScore, double &blackScore, Board* b){
 bool Human::move(double &whiteScore, double &blackScore){
 
     string command;
-    cin >> command;
+    while(cin >> command){
     if(command == "move"){
                     string start;
                     string end;
@@ -50,12 +50,13 @@ bool Human::move(double &whiteScore, double &blackScore){
                         b->printBoard();           
                     }catch(string error){
                         cout << error << endl;
+                        continue;
                     }
                     bool endGame = checkEnd(whiteScore, blackScore, b);
                     if(!endGame){
                         return endGame;
                     }
-                    
+                    break;
                 }else if(command =="undo"){
                     b->undo();
                     b->printBoard();
@@ -72,6 +73,7 @@ bool Human::move(double &whiteScore, double &blackScore){
                     cout << "Black: " << blackScore << endl;
                     return false;
                 }
+    }
                 cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
                 return true;
 }
@@ -135,10 +137,11 @@ bool Computer2::move(double &whiteScore, double &blackScore){
                 for(int l = 0; l < 8; l++){
                     int curMoveScore = 0;
                     try{
-                        b->move(coord{i,j}, coord{k,l});
-                        if((b->getState(coord{k,l}) <= 90 && b->getState(coord{k,l}) >= 65)== (b->getTurn()=='w')){
+                        if((b->getState(coord{k,l}) <= 90 && b->getState(coord{k,l}) >= 65)!= (b->getTurn()=='w')){
                             curMoveScore++;
-                        }if((b->isCheck('w'))||b->isCheck('b')){
+                        }
+                        b->move(coord{i,j}, coord{k,l});
+                        if((b->isCheck('w'))||b->isCheck('b')){
                             curMoveScore++;
                         }if(b->isCheckmate('w')||b->isCheckmate('b')){
                             curMoveScore = 10;
@@ -148,6 +151,70 @@ bool Computer2::move(double &whiteScore, double &blackScore){
                         if(curMoveScore > greatestMoveScore){
                             allValidMoves.clear();
                             allValidMoves.push_back(to_string(i) + to_string(j) + to_string(k) + to_string(l));
+                            greatestMoveScore = curMoveScore;
+                        }else if(curMoveScore == greatestMoveScore){
+                            allValidMoves.push_back(to_string(i) + to_string(j) + to_string(k) + to_string(l));
+                        }
+
+
+                    }catch(std::string error){
+                        
+                    }
+                }
+            }
+        }
+    }
+    if(allValidMoves.size() == 0){
+        b->printBoard();           
+        return checkEnd(whiteScore, blackScore, b);
+    }
+    srand(time(NULL));
+    int r = rand() % allValidMoves.size();
+    string m = allValidMoves[r];
+    try{
+    b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
+            coord{m.at(2) - '0', m.at(3) - '0'});
+    }catch(std::string error){
+
+    }
+    b->printBoard();   
+    bool end = checkEnd(whiteScore, blackScore, b);
+    if(!end){
+        return end;
+    }        
+    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
+    return true;
+    }
+}
+}
+
+bool Computer3::move(double &whiteScore, double &blackScore){
+    string command;
+    int greatestMoveScore = 0;
+    while(cin >> command){
+    if(command == "move"){
+    allValidMoves.clear();
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            for(int k = 0; k < 8; k++){
+                for(int l = 0; l < 8; l++){
+                    int curMoveScore = 0;
+                    try{
+                        if((b->getState(coord{k,l}) <= 90 && b->getState(coord{k,l}) >= 65)!= (b->getTurn()=='w')){
+                            curMoveScore++;
+                        }
+                        b->move(coord{i,j}, coord{k,l});
+                        if((b->isCheck('w'))||b->isCheck('b')){
+                            curMoveScore++;
+                        }if(b->isCheckmate('w')||b->isCheckmate('b')){
+                            curMoveScore = 10;
+                        }
+                        
+                        b->undo();
+                        if(curMoveScore > greatestMoveScore){
+                            allValidMoves.clear();
+                            allValidMoves.push_back(to_string(i) + to_string(j) + to_string(k) + to_string(l));
+                            greatestMoveScore = curMoveScore;
                         }else if(curMoveScore == greatestMoveScore){
                             allValidMoves.push_back(to_string(i) + to_string(j) + to_string(k) + to_string(l));
                         }
@@ -195,3 +262,4 @@ Computer1::Computer1(Board* b): Player{b}{
 
 Computer2::Computer2(Board* b): Player{b}{
 }
+

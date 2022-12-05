@@ -35,7 +35,8 @@ public:
     bool isCheck(char color);
     bool isCheckmate(char color);
     bool isStalemate(char color);
-    
+    bool isCapturable(coord c); //purely used for computers to tell when a piece can be saved from capture
+
     void placePiece(char piece, coord c);
     void removePiece(coord c);
     void clearBoard();

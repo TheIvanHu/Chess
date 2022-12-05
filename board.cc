@@ -297,6 +297,10 @@ bool Board::isStalemate(char color){
     return true;
 }
 
+bool Board::isCapturable(coord c){
+    
+}
+
 void Board::placePiece(char piece, coord c){
     if(piece == 'K' || piece == 'k'){
         grid[c.x][c.y] = new King(piece == 'K', c);

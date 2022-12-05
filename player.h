@@ -39,10 +39,12 @@ class Computer2 : public Player{
 class Computer3 : public Player{
     public:
         bool move(double &whiteScore, double &blackScore);
+        Computer3(Board* b);
 };
 
 class Computer4 : public Player{
     public:
         bool move(double &whiteScore, double &blackScore);
+        Computer4(Board* b);
 };
 #endif
