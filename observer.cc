@@ -36,24 +36,20 @@ GraphicalObserver::GraphicalObserver(Board * subject): subject{subject} {
 void GraphicalObserver::notify(){
     const int SIZE = 50;
     const int PADDING = 50;
-    for(int i = 7; i >= 0; i--){
-        for(int j = 0; j < 8; j++){
-            if((i+j) % 2 != 0){
-                x->fillRectangle(j*SIZE+PADDING, i*SIZE+PADDING, SIZE, SIZE, 5); //cyan
-            }
-            else if((i+j) % 2 == 0){
-                x->fillRectangle(j*SIZE+PADDING, i*SIZE+PADDING, SIZE, SIZE, 0); //white
-            }
-        }
-    }
     for(int i = 7; i >= 0; i--){         // row
         for(int j = 0; j < 8; j++){     // col
             coord p;
             p.x = j;
             p.y = i;
             char c = subject->getState(p);
+            if((i+j) % 2 == 0){
+                x->fillRectangle(j*SIZE+PADDING, SIZE*8-i*SIZE, SIZE, SIZE, 5); //cyan
+            }
+            else if((i+j) % 2 != 0){
+                x->fillRectangle(j*SIZE+PADDING, SIZE*8-i*SIZE, SIZE, SIZE, 0); //white
+            }
             if(c != ' ' && c != '_'){
-                x->drawString(j*SIZE+PADDING+25, 400-i*SIZE+PADDING-25, std::string(1,c));
+                x->drawString(j*SIZE+PADDING+25, SIZE*8-i*SIZE+PADDING-25, std::string(1,c));
             }
         }
     }
