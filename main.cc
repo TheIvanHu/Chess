@@ -43,9 +43,9 @@ int main(){
     TextObserver * newOb = new TextObserver(board);
     board->attach(newOb);
     obs.emplace_back(newOb);
-    // GraphicalObserver* graphOb = new GraphicalObserver(board);
-    // board->attach(graphOb);
-    // obs.emplace_back(graphOb);
+    GraphicalObserver* graphOb = new GraphicalObserver(board);
+    board->attach(graphOb);
+    obs.emplace_back(graphOb);
     
     bool setBoard = false;          //if the board has been setup
     string command;

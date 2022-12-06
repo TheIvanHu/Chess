@@ -130,7 +130,7 @@ bool Human::move(double &whiteScore, double &blackScore){
                     resign(whiteScore, blackScore, b);
                 }
     }
-
+    return true;
 }
 
 bool Computer1::move(double &whiteScore, double &blackScore){
