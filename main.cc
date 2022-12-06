@@ -58,31 +58,47 @@ int main(){
             }
             board->printBoard();
 
-            cin >> player;
+            while(cin >> player){
             if(player == "human"){
-                p1 = new Human(board);
-            }else if(player == "computer1"){
-                p1 = new Computer1(board);
-            }else if(player == "computer2"){
-                p1 = new Computer2(board);
-            }else if(player == "computer3"){
-
-            }else if(player == "computer4"){
-
+                    p1 = new Human(board);
+                    break;
+                }else if(player == "computer1"){
+                    p1 = new Computer1(board);
+                    break;
+                }else if(player == "computer2"){
+                    p1 = new Computer2(board);
+                    break;
+                }else if(player == "computer3"){
+                    p1 = new Computer3(board);
+                    break;
+                }else if(player == "computer4"){
+                    p1 = new Computer4(board);
+                    break;
+                }
             }
-            cin >> player;
-            if(player == "human"){
-                p2 = new Human(board);
-            }else if(player == "computer1"){
-                p2 = new Computer1(board);
-            }else if(player == "computer2"){
-                p2 = new Computer2(board);
-            }else if(player == "computer3"){
-
-            }else if(player == "computer4"){
-
+            while(cin >> player){
+                if(player == "human"){
+                    p2 = new Human(board);
+                    break;
+                }else if(player == "computer1"){
+                    p2 = new Computer1(board);
+                    break;
+                }else if(player == "computer2"){
+                    p2 = new Computer2(board);
+                    break;
+                }else if(player == "computer3"){
+                    p2 = new Computer3(board);
+                    break;
+                }else if(player == "computer4"){
+                    p2 = new Computer4(board);
+                    break;
+                }
             }
-            cout << "White's turn: " <<endl;
+            if(board->getTurn()=='w'){
+                cout << "White's turn: " <<endl;
+            }else{
+                cout << "Black's turn: " <<endl;
+            }
             curPlayer = p1;
             while(curPlayer->move(whiteScore, blackScore)){   //game loop
                 if(curPlayer == p1){

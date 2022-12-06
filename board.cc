@@ -297,8 +297,24 @@ bool Board::isStalemate(char color){
     return true;
 }
 
+Piece* Board::getPiece(coord c){
+    return grid[c.x][c.y];
+}
+
 bool Board::isCapturable(coord c){
-    
+    Piece* p = grid[c.x][c.y];
+    if(!p){
+        return false;
+    }
+    for(int i = 0; i < 8; i++){ //check if anything can "take" the piece
+        for(int j = 0; j < 8; j++){
+            Piece* q = grid[i][j];
+            if(q && q != p && q->validMove(p->getPosition(), grid)){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void Board::placePiece(char piece, coord c){
@@ -360,6 +376,8 @@ void Board::resetBoard(){
     }
     turn = 'w';
 }
+
+
 
 Board::Board(){
     for(int i = 0; i < 8; i++){

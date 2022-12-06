@@ -4,11 +4,13 @@
 #include <vector>
 #include <string>
 #include "pieces.h"
+#include <map>
 
 class Board;
 
 class Player{
     public:        
+    
         std::vector<std::string> allValidMoves;  //strings formatted "startcoordsendcoords" ("a4e4")
         Board* b;
         Player(Board* b);
@@ -43,6 +45,7 @@ class Computer3 : public Player{
 };
 
 class Computer4 : public Player{
+    
     public:
         bool move(double &whiteScore, double &blackScore);
         Computer4(Board* b);
