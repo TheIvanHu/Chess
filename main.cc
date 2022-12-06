@@ -47,7 +47,7 @@ int main(){
     // board->attach(graphOb);
     // obs.emplace_back(graphOb);
     
-    bool setBoard = false;      //if the board has been setup
+    bool setBoard = false;          //if the board has been setup
     string command;
     
     while(cin >> command){          //command loop
@@ -56,10 +56,12 @@ int main(){
             Player* p1;              //white
             Player* p2;              //black
             Player* curPlayer;
+            char p1Color;
             if(!setBoard){
                 setDefaultBoard(board);
                 board->setTurn('w');
             }
+            p1Color = board->getTurn();
             board->printBoard();
 
             while(cin >> player){
@@ -105,10 +107,10 @@ int main(){
             }
             curPlayer = p1;
             while(curPlayer->move(whiteScore, blackScore)){   //game loop
-                if(curPlayer == p1){
-                    curPlayer = p2;
-                }else{
+                if(p1Color == board->getTurn()){
                     curPlayer = p1;
+                }else{
+                    curPlayer = p2;
                 }
 
             }

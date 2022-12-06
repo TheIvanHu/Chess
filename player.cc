@@ -8,8 +8,6 @@
 
 using namespace std;
 
-
-
 bool checkEnd(double &whiteScore, double &blackScore, Board* b){
     if(b->isCheckmate(b->getTurn())){
                         cout << "Checkmate! " << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
@@ -38,6 +36,57 @@ bool checkEnd(double &whiteScore, double &blackScore, Board* b){
 }
 
 
+
+void undoMove(Board * b){
+    b->undo();
+    b->printBoard();
+    if(b->isCheck(b->getTurn())){
+        cout << (b->getTurn() == 'w' ? "White" : "Black") << " is in check." <<endl;
+    }
+    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
+}
+
+bool resign(double &whiteScore, double &blackScore, Board * b){
+    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
+                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
+                    if(b->getTurn() == 'w'){
+                        blackScore++;
+                    }else{
+                        whiteScore++;
+                    }
+                    cout << "SCORE" << endl;
+                    cout << "White: " << whiteScore << endl;
+                    cout << "Black: " << blackScore << endl;
+                    return false;
+}
+
+
+bool Player::computerMove(double & whiteScore, double& blackScore){ //performs everything needed to omove
+    if(allValidMoves.size() == 0){
+        b->printBoard();                            //if theres not valid moves, either checkmate or stalemate
+        return checkEnd(whiteScore, blackScore, b); 
+    }
+    srand(time(NULL));
+    int r = rand() % allValidMoves.size();
+    string m = allValidMoves[r];                    //selects a random validmove
+    try{
+    b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
+            coord{m.at(2) - '0', m.at(3) - '0'});   //performs the move
+    }catch(std::string error){
+
+    }
+    b->printBoard();                                //prints board
+    if(b->isCheck(b->getTurn())){
+        cout << (b->getTurn() == 'w' ? "White" : "Black") << " is in check." <<endl;
+    }
+    bool end = checkEnd(whiteScore, blackScore, b);
+    if(!end){
+        return end;
+    }                                                //checks for check, checkmate and stalemate and acts accordingly
+    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
+    return true;                                     //return true continue the main loop
+}
+
 bool Human::move(double &whiteScore, double &blackScore){
 
     string command;
@@ -55,12 +104,13 @@ bool Human::move(double &whiteScore, double &blackScore){
                     end.at(0) - 'a' >= 'a' -'a' &&
                     end.at(1) - '1' <= '8' -'1' &&
                     end.at(1) - '1' >= '1' -'1'){
-
-                    
                     try{
                         b->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
                                     coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
-                        b->printBoard();           
+                        b->printBoard();
+                            if(b->isCheck(b->getTurn())){
+                                cout << (b->getTurn() == 'w' ? "White" : "Black") << " is in check." <<endl;
+                                }
                     }catch(string error){
                         cout << error << endl;
                         continue;
@@ -75,20 +125,9 @@ bool Human::move(double &whiteScore, double &blackScore){
     }
                     }}
                 }else if(command =="undo"){
-                    b->undo();
-                    b->printBoard();
+                    undoMove(b);
                 }else if(command == "resign"){
-                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                    if(b->getTurn() == 'w'){
-                        blackScore++;
-                    }else{
-                        whiteScore++;
-                    }
-                    cout << "SCORE" << endl;
-                    cout << "White: " << whiteScore << endl;
-                    cout << "Black: " << blackScore << endl;
-                    return false;
+                    resign(whiteScore, blackScore, b);
                 }
     }
 
@@ -114,42 +153,11 @@ bool Computer1::move(double &whiteScore, double &blackScore){
             }
         }
     }
-    if(allValidMoves.size() == 0){
-        b->printBoard();           
-        return checkEnd(whiteScore, blackScore, b);
-        //if no possible moves, either checkmate or stalemate
-    }
-    srand(time(NULL));                              //generates a completely random move
-    int r = rand() % allValidMoves.size();
-    string m = allValidMoves[r];
-    try{
-    b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
-            coord{m.at(2) - '0', m.at(3) - '0'});   
-    }catch(std::string error){
-
-    }
-    b->printBoard();
-    bool end = checkEnd(whiteScore, blackScore, b);
-    if(!end){
-        return end;
-    }
-    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
-    return true;
+    return computerMove(whiteScore, blackScore);
     }else if(command =="undo"){
-                    b->undo();
-                    b->printBoard();
+                    undoMove(b);
                 }else if(command == "resign"){
-                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                    if(b->getTurn() == 'w'){
-                        blackScore++;
-                    }else{
-                        whiteScore++;
-                    }
-                    cout << "SCORE" << endl;
-                    cout << "White: " << whiteScore << endl;
-                    cout << "Black: " << blackScore << endl;
-                    return false;
+                    resign(whiteScore, blackScore, b);
                 }
 }
 return true;
@@ -175,8 +183,9 @@ bool Computer2::move(double &whiteScore, double &blackScore){
             for(int k = 0; k < 8; k++){
                 for(int l = 0; l < 8; l++){
                     int curMoveScore = 0;
+                    char endSquare = b->getState(coord{k,l});
                     try{
-                        if((b->getState(coord{k,l}) <= 122 && b->getState(coord{k,l}) >= 97) == (colorEnemy =='b')){
+                        if(endSquare!='_'&&endSquare!=' '&&((endSquare <= 122 && endSquare >= 97) == (colorEnemy =='b'))){
                             curMoveScore++; //check that a piece of colorEnemy is on the end square (capture)
                         }
                         b->move(coord{i,j}, coord{k,l});
@@ -203,41 +212,11 @@ bool Computer2::move(double &whiteScore, double &blackScore){
             }
         }
     }
-    if(allValidMoves.size() == 0){
-        b->printBoard();           
-        return checkEnd(whiteScore, blackScore, b);
-    }
-    srand(time(NULL));
-    int r = rand() % allValidMoves.size();
-    string m = allValidMoves[r];
-    try{
-    b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
-            coord{m.at(2) - '0', m.at(3) - '0'});
-    }catch(std::string error){
-
-    }
-    b->printBoard();   
-    bool end = checkEnd(whiteScore, blackScore, b);
-    if(!end){
-        return end;
-    }        
-    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
-    return true;
+    return computerMove(whiteScore, blackScore);
     }else if(command =="undo"){
-                    b->undo();
-                    b->printBoard();
+                    undoMove(b);
                 }else if(command == "resign"){
-                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                    if(b->getTurn() == 'w'){
-                        blackScore++;
-                    }else{
-                        whiteScore++;
-                    }
-                    cout << "SCORE" << endl;
-                    cout << "White: " << whiteScore << endl;
-                    cout << "Black: " << blackScore << endl;
-                    return false;
+                    resign(whiteScore, blackScore, b);
                 }
 }
 return true;
@@ -264,11 +243,14 @@ bool Computer3::move(double &whiteScore, double &blackScore){
                     int curMoveScore = 0;
                     int capturableStart = 0;
                     int capturableEnd = 0; // how many pieces are capturable before and after
+                    char endSquare = b->getState(coord{k,l});
                     try{
                         for(int m = 0; m < 8; m++){
                             for(int n = 0; n < 8; n++){
+                                char curSquare = b->getState(coord{m,n});
                                 if(
-                                ((b->getState(coord{m,n}) <= 90 && b->getState(coord{m,n}) >= 65) == (colorAlly=='w'))
+                                (curSquare!='_'&&curSquare!=' '&&
+                                (curSquare <= 90 && curSquare >= 65) == (colorAlly=='w'))
                                 &&  //Check if m,n is an ally square and then check if its capturable
                                 b->isCapturable(coord{m,n})
                                 ){
@@ -276,15 +258,16 @@ bool Computer3::move(double &whiteScore, double &blackScore){
                                 }
                             }
                         }
-                        if((b->getState(coord{k,l}) <= 122 && b->getState(coord{k,l}) >= 97) == (colorEnemy =='b')){
+                        if(endSquare!='_'&&endSquare!=' '&&((endSquare <= 122 && endSquare >= 97) == (colorEnemy =='b'))){
                             curMoveScore++; //check that a piece of colorEnemy is on the end square (capture)
                         }
                         b->move(coord{i,j}, coord{k,l});
 
                         for(int m = 0; m < 8; m++){
                             for(int n = 0; n < 8; n++){
+                                char curSquare = b->getState(coord{m,n});
                                 if( //Check if m,n is an ally square and then check if its capturable
-                                ((b->getState(coord{m,n}) <= 90 && b->getState(coord{m,n}) >= 65)== (colorAlly=='w'))
+                                curSquare!='_'&&curSquare!=' '&&((curSquare <= 90 && curSquare >= 65)== (colorAlly=='w'))
                                 &&
                                 b->isCapturable(coord{m,n})){
                                     capturableEnd++;
@@ -317,41 +300,11 @@ bool Computer3::move(double &whiteScore, double &blackScore){
             }
         }
     }
-    if(allValidMoves.size() == 0){
-        b->printBoard();           
-        return checkEnd(whiteScore, blackScore, b);
-    }
-    srand(time(NULL));
-    int r = rand() % allValidMoves.size();
-    string m = allValidMoves[r];
-    try{
-    b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
-            coord{m.at(2) - '0', m.at(3) - '0'});
-    }catch(std::string error){
-
-    }
-    b->printBoard();   
-    bool end = checkEnd(whiteScore, blackScore, b);
-    if(!end){
-        return end;
-    }        
-    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
-    return true;
+    return computerMove(whiteScore, blackScore);
     }else if(command =="undo"){
-                    b->undo();
-                    b->printBoard();
+                    undoMove(b);
                 }else if(command == "resign"){
-                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                    if(b->getTurn() == 'w'){
-                        blackScore++;
-                    }else{
-                        whiteScore++;
-                    }
-                    cout << "SCORE" << endl;
-                    cout << "White: " << whiteScore << endl;
-                    cout << "Black: " << blackScore << endl;
-                    return false;
+                    resign(whiteScore, blackScore, b);
                 }
 }
 return true;
@@ -387,6 +340,7 @@ bool Computer4::move(double &whiteScore, double &blackScore){
         for(int j = 0; j < 8; j++){
             for(int k = 0; k < 8; k++){
                 for(int l = 0; l < 8; l++){
+                    char endSquare = b->getState(coord{k,l});
                     int curMoveScore = 0;
                     int capturableStartAlly = 0;
                     int capturableEndAlly = 0; // how many pieces are capturable before and after
@@ -396,24 +350,25 @@ bool Computer4::move(double &whiteScore, double &blackScore){
                     try{
                         for(int m = 0; m < 8; m++){
                             for(int n = 0; n < 8; n++){
-                                if(
-                                ((b->getState(coord{m,n}) <= 90 && b->getState(coord{m,n}) >= 65) == (colorAlly=='w'))
+                                char curSquare = b->getState(coord{m,n});
+                                if(curSquare!='_'&&curSquare!=' '&&
+                                ((curSquare <= 90 && curSquare >= 65) == (colorAlly=='w'))
                                 &&  //Check if m,n is an ally square and then check if its capturable
                                 b->isCapturable(coord{m,n})
                                 ){
-                                    auto it = pieceValues.find(b->getState(coord{m,n}));
+                                    auto it = pieceValues.find(curSquare);
                                     capturableStartAlly += ( it->second);
                                 }
-                                if( //Check if m,n is an enemy square and then check if its capturable
-                                ((b->getState(coord{m,n}) <= 90 && b->getState(coord{m,n}) >= 65) == (colorEnemy=='w'))
-                                &&
+                                if(curSquare!='_'&&curSquare!=' '&&
+                                ((curSquare <= 90 && curSquare >= 65) == (colorEnemy=='w'))
+                                &&  //Check if m,n is an enemy square and then check if its capturable
                                 b->isCapturable(coord{m,n})){
-                                    auto it = pieceValues.find(b->getState(coord{m,n}));
+                                    auto it = pieceValues.find(curSquare);
                                     capturableStartEnemy += (it->second);                   
                               }
                             }
                         }
-                        if((b->getState(coord{k,l}) <= 122 && b->getState(coord{k,l}) >= 97) == (colorEnemy =='b')){
+                        if(endSquare!='_'&&endSquare!=' '&&((endSquare <= 122 && endSquare >= 97) == (colorEnemy =='b'))){
                             //check that a piece of colorEnemy is on the end square (capture)
                             auto it = pieceValues.find(b->getState(coord{k,l}));
                             curMoveScore += (10 * it->second);
@@ -427,18 +382,19 @@ bool Computer4::move(double &whiteScore, double &blackScore){
                         }
                         for(int m = 0; m < 8; m++){
                             for(int n = 0; n < 8; n++){
-                                if( //Check if m,n is an ally square and then check if its capturable
-                                ((b->getState(coord{m,n}) <= 90 && b->getState(coord{m,n}) >= 65) == (colorAlly=='w'))
+                                char curSquare = b->getState(coord{m,n});
+                                if(curSquare!='_'&&curSquare!=' '&&  //Check if m,n is an ally square and then check if its capturable
+                                ((curSquare <= 90 && curSquare >= 65) == (colorAlly=='w'))
                                 &&
                                 b->isCapturable(coord{m,n})){
-                                    auto it = pieceValues.find(b->getState(coord{m,n}));
+                                    auto it = pieceValues.find(curSquare);
                                     capturableEndAlly += it->second;                                  
                                     }
-                                if( //Check if m,n is an enemy square and then check if its capturable
-                                ((b->getState(coord{m,n}) <= 90 && b->getState(coord{m,n}) >= 65) == (colorEnemy=='w'))
+                                if(curSquare!='_'&&curSquare!=' '&&  //Check if m,n is an enemy square and then check if its capturable
+                                ((curSquare <= 90 && curSquare >= 65) == (colorEnemy=='w'))
                                 &&
                                 b->isCapturable(coord{m,n})){
-                                    auto it = pieceValues.find(b->getState(coord{m,n}));
+                                    auto it = pieceValues.find(curSquare);
                                     capturableEndEnemy += it->second; 
                                 }
                             }
@@ -471,41 +427,11 @@ bool Computer4::move(double &whiteScore, double &blackScore){
             }
         }
     }
-    if(allValidMoves.size() == 0){
-        b->printBoard();           
-        return checkEnd(whiteScore, blackScore, b);
-    }
-    srand(time(NULL));
-    int r = rand() % allValidMoves.size();
-    string m = allValidMoves[r];
-    try{
-    b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
-            coord{m.at(2) - '0', m.at(3) - '0'});
-    }catch(std::string error){
-        
-    }
-    b->printBoard();   
-    bool end = checkEnd(whiteScore, blackScore, b);
-    if(!end){
-        return end;
-    }        
-    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
-    return true;
+    return computerMove(whiteScore, blackScore);
     }else if(command =="undo"){
-                    b->undo();
-                    b->printBoard();
+                    undoMove(b);
                 }else if(command == "resign"){
-                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                    if(b->getTurn() == 'w'){
-                        blackScore++;
-                    }else{
-                        whiteScore++;
-                    }
-                    cout << "SCORE" << endl;
-                    cout << "White: " << whiteScore << endl;
-                    cout << "Black: " << blackScore << endl;
-                    return false;
+                    resign(whiteScore, blackScore, b);
                 }
 }
 return true;
