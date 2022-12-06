@@ -10,7 +10,7 @@ class Board;
 
 class Player{
     public:
-        virtual bool computerMove(double &whiteScore, double &blackScore);
+        bool computerMove(double &whiteScore, double &blackScore);
         std::vector<std::string> allValidMoves;  //strings formatted "startcoordsendcoords" ("a4e4")
         Board* b;
         Player(Board* b);
