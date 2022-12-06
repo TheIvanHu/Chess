@@ -42,7 +42,7 @@ bool Human::move(double &whiteScore, double &blackScore){
 
     string command;
     while(cin >> command){
-    if(command == "move"){
+        if(command == "move"){
                     string start;
                     string end;
                     while(cin >> start){    
@@ -69,8 +69,9 @@ bool Human::move(double &whiteScore, double &blackScore){
                     if(!endGame){
                         return endGame;
                     }
-                    break;
-                    }
+                    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
+                    return true;                    
+                }
     }
                     }}
                 }else if(command =="undo"){
@@ -90,8 +91,7 @@ bool Human::move(double &whiteScore, double &blackScore){
                     return false;
                 }
     }
-                cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
-                return true;
+
 }
 
 bool Computer1::move(double &whiteScore, double &blackScore){
@@ -135,7 +135,22 @@ bool Computer1::move(double &whiteScore, double &blackScore){
     }
     cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
     return true;
-    }
+    }else if(command =="undo"){
+                    b->undo();
+                    b->printBoard();
+                }else if(command == "resign"){
+                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
+                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
+                    if(b->getTurn() == 'w'){
+                        blackScore++;
+                    }else{
+                        whiteScore++;
+                    }
+                    cout << "SCORE" << endl;
+                    cout << "White: " << whiteScore << endl;
+                    cout << "Black: " << blackScore << endl;
+                    return false;
+                }
 }
 return true;
 
@@ -208,7 +223,22 @@ bool Computer2::move(double &whiteScore, double &blackScore){
     }        
     cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
     return true;
-    }
+    }else if(command =="undo"){
+                    b->undo();
+                    b->printBoard();
+                }else if(command == "resign"){
+                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
+                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
+                    if(b->getTurn() == 'w'){
+                        blackScore++;
+                    }else{
+                        whiteScore++;
+                    }
+                    cout << "SCORE" << endl;
+                    cout << "White: " << whiteScore << endl;
+                    cout << "Black: " << blackScore << endl;
+                    return false;
+                }
 }
 return true;
 
@@ -307,7 +337,22 @@ bool Computer3::move(double &whiteScore, double &blackScore){
     }        
     cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
     return true;
-    }
+    }else if(command =="undo"){
+                    b->undo();
+                    b->printBoard();
+                }else if(command == "resign"){
+                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
+                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
+                    if(b->getTurn() == 'w'){
+                        blackScore++;
+                    }else{
+                        whiteScore++;
+                    }
+                    cout << "SCORE" << endl;
+                    cout << "White: " << whiteScore << endl;
+                    cout << "Black: " << blackScore << endl;
+                    return false;
+                }
 }
 return true;
 
@@ -446,7 +491,22 @@ bool Computer4::move(double &whiteScore, double &blackScore){
     }        
     cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
     return true;
-    }
+    }else if(command =="undo"){
+                    b->undo();
+                    b->printBoard();
+                }else if(command == "resign"){
+                    cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
+                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
+                    if(b->getTurn() == 'w'){
+                        blackScore++;
+                    }else{
+                        whiteScore++;
+                    }
+                    cout << "SCORE" << endl;
+                    cout << "White: " << whiteScore << endl;
+                    cout << "Black: " << blackScore << endl;
+                    return false;
+                }
 }
 return true;
 
