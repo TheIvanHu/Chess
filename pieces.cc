@@ -243,4 +243,3 @@ bool Queen::validMove(coord p, Piece *** grid){
     }
     return false;
 }
-        
