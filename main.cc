@@ -1,9 +1,12 @@
 #include "pieces.h"
 #include "board.h"
 #include "observer.h"
+#include "player.h"
+
 #include <iostream>
 #include <vector>
-#include "player.h"
+#include <memory>
+
 
 using namespace std;
 
@@ -37,15 +40,15 @@ void setDefaultBoard(Board* b){
 int main(){
     double whiteScore = 0;
     double blackScore = 0;
-    Board *board = new Board;
+    shared_ptr<Board> board = make_shared<Board>();
     vector<Observer *> obs;
 
-    TextObserver * newOb = new TextObserver(board);
+    TextObserver * newOb = new TextObserver(board.get());
     board->attach(newOb);
     obs.emplace_back(newOb);
-    GraphicalObserver* graphOb = new GraphicalObserver(board);
-    board->attach(graphOb);
-    obs.emplace_back(graphOb);
+    // GraphicalObserver* graphOb = new GraphicalObserver(board);
+    // board->attach(graphOb);
+    // obs.emplace_back(graphOb);
     
     bool setBoard = false;          //if the board has been setup
     string command;
@@ -53,12 +56,12 @@ int main(){
     while(cin >> command){          //command loop
         if(command == "game"){
             string player;              
-            Player* p1;              //white
-            Player* p2;              //black
-            Player* curPlayer;
+            shared_ptr<Player> p1;              //white
+            shared_ptr<Player> p2;              //black
+            shared_ptr<Player> curPlayer;
             char p1Color;
-            if(!setBoard){
-                setDefaultBoard(board);
+            if(!setBoard){  
+                setDefaultBoard(board.get());
                 board->setTurn('w');
             }
             p1Color = board->getTurn();
@@ -66,37 +69,37 @@ int main(){
 
             while(cin >> player){
             if(player == "human"){
-                    p1 = new Human(board);
+                    p1 = make_shared<Human>(board.get());
                     break;
                 }else if(player == "computer1"){
-                    p1 = new Computer1(board);
+                    p1 = make_shared<Computer1>(board.get());
                     break;
                 }else if(player == "computer2"){
-                    p1 = new Computer2(board);
+                    p1 = make_shared<Computer2>(board.get());
                     break;
                 }else if(player == "computer3"){
-                    p1 = new Computer3(board);
+                    p1 = make_unique<Computer3>(board.get());
                     break;
                 }else if(player == "computer4"){
-                    p1 = new Computer4(board);
+                    p1 = make_unique<Computer4>(board.get());
                     break;
                 }
             }
             while(cin >> player){
                 if(player == "human"){
-                    p2 = new Human(board);
+                    p2 = make_unique<Human>(board.get());
                     break;
                 }else if(player == "computer1"){
-                    p2 = new Computer1(board);
+                    p2 = make_unique<Computer1>(board.get());
                     break;
                 }else if(player == "computer2"){
-                    p2 = new Computer2(board);
+                    p2 = make_unique<Computer2>(board.get());
                     break;
                 }else if(player == "computer3"){
-                    p2 = new Computer3(board);
+                    p2 = make_unique<Computer3>(board.get());
                     break;
                 }else if(player == "computer4"){
-                    p2 = new Computer4(board);
+                    p2 = make_unique<Computer4>(board.get());
                     break;
                 }
             }
@@ -114,8 +117,6 @@ int main(){
                 }
 
             }
-                delete p1;
-                delete p2;
         }else if(command == "setup"){
             setBoard = true;
             while(cin >> command){   //setup loop
@@ -153,7 +154,5 @@ int main(){
 
 
     }
-    delete board;
-
     cout << "Final Score:" << endl << "White: " << whiteScore << endl << "Black: " << blackScore << endl;
 }

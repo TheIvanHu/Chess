@@ -10,31 +10,30 @@ using namespace std;
 
 bool checkEnd(double &whiteScore, double &blackScore, Board* b){
     if(b->isCheckmate(b->getTurn())){
-                        cout << "Checkmate! " << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                        if(b->getTurn() == 'w'){
-                            blackScore++;
-                        }else{
-                            whiteScore++;
-                        }
-                        cout << "SCORE" << endl;
-                        cout << "White: " << whiteScore << endl;
-                        cout << "Black: " << blackScore << endl;
-                        b->resetBoard();
-                        return false;
-                    }
-                    else if(b->isStalemate(b->getTurn())){
-                        cout << "Stalemate!" << endl;
-                        whiteScore += 0.5;
-                        blackScore += 0.5;
-                        cout << "SCORE" << endl;
-                        cout << "White: " << whiteScore << endl;
-                        cout << "Black: " << blackScore << endl;
-                        b->resetBoard();
-                        return false;
-                    }
-                    return true;
+        cout << "Checkmate! " << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
+        if(b->getTurn() == 'w'){
+            blackScore++;
+        }else{
+            whiteScore++;
+        }
+        cout << "SCORE" << endl;
+        cout << "White: " << whiteScore << endl;
+        cout << "Black: " << blackScore << endl;
+        b->resetBoard();
+        return false;
+    }
+    else if(b->isStalemate(b->getTurn())){
+        cout << "Stalemate!" << endl;
+        whiteScore += 0.5;
+        blackScore += 0.5;
+        cout << "SCORE" << endl;
+        cout << "White: " << whiteScore << endl;
+        cout << "Black: " << blackScore << endl;
+        b->resetBoard();
+        return false;
+    }
+    return true;
 }
-
 
 
 void undoMove(Board * b){
@@ -46,18 +45,19 @@ void undoMove(Board * b){
     cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
 }
 
+
 bool resign(double &whiteScore, double &blackScore, Board * b){
     cout << (b->getTurn() == 'w' ? "White" : "Black") << " Resigns, " << endl;
-                    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
-                    if(b->getTurn() == 'w'){
-                        blackScore++;
-                    }else{
-                        whiteScore++;
-                    }
-                    cout << "SCORE" << endl;
-                    cout << "White: " << whiteScore << endl;
-                    cout << "Black: " << blackScore << endl;
-                    return false;
+    cout << (b->getTurn() == 'w' ? "Black" : "White") << " wins!" << endl;
+    if(b->getTurn() == 'w'){
+        blackScore++;
+    }else{
+        whiteScore++;
+    }
+    cout << "SCORE" << endl;
+    cout << "White: " << whiteScore << endl;
+    cout << "Black: " << blackScore << endl;
+    return false;
 }
 
 
@@ -73,7 +73,7 @@ bool Player::computerMove(double & whiteScore, double& blackScore){ //performs e
     b->move(coord{m.at(0) - '0', m.at(1) - '0'}, 
             coord{m.at(2) - '0', m.at(3) - '0'});   //performs the move
     }catch(std::string error){
-
+        cerr << error << endl;
     }
     b->printBoard();                                //prints board
     if(b->isCheck(b->getTurn())){
@@ -87,81 +87,80 @@ bool Player::computerMove(double & whiteScore, double& blackScore){ //performs e
     return true;                                     //return true continue the main loop
 }
 
-bool Human::move(double &whiteScore, double &blackScore){
 
+bool Human::move(double &whiteScore, double &blackScore){
     string command;
     while(cin >> command){
         if(command == "move"){
-                    string start;
-                    string end;
-                    while(cin >> start){    
-                    if(start.at(0) - 'a' <= 'h' -'a' &&
-                    start.at(0) - 'a' >= 'a' -'a' &&
-                    start.at(1) - '1' <= '8' -'1' &&
-                    start.at(1) - '1' >= '1' -'1'){
-                    while(cin >> end){    
-                    if(end.at(0) - 'a' <= 'h' -'a' &&
-                    end.at(0) - 'a' >= 'a' -'a' &&
-                    end.at(1) - '1' <= '8' -'1' &&
-                    end.at(1) - '1' >= '1' -'1'){
-                    try{
-                        b->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
-                                    coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
-                        b->printBoard();
-                            if(b->isCheck(b->getTurn())){
-                                cout << (b->getTurn() == 'w' ? "White" : "Black") << " is in check." <<endl;
-                                }
-                    }catch(string error){
-                        cout << error << endl;
-                        continue;
+            string start;
+            string end;
+            while(cin >> start){    
+                if(start.at(0) - 'a' <= 'h' -'a' &&
+                start.at(0) - 'a' >= 'a' -'a' &&
+                start.at(1) - '1' <= '8' -'1' &&
+                start.at(1) - '1' >= '1' -'1'){
+                while(cin >> end){    
+                if(end.at(0) - 'a' <= 'h' -'a' &&
+                end.at(0) - 'a' >= 'a' -'a' &&
+                end.at(1) - '1' <= '8' -'1' &&
+                end.at(1) - '1' >= '1' -'1'){
+                try{
+                    b->move(coord{start.at(0) - 'a',start.at(1) - '1'}, 
+                                coord{end.at(0) - 'a',end.at(1) - '1'});        //auto converts chess move (e4) to coords
+                    b->printBoard();
+                    if(b->isCheck(b->getTurn())){
+                        cout << (b->getTurn() == 'w' ? "White" : "Black") << " is in check." <<endl;
                     }
-                    bool endGame = checkEnd(whiteScore, blackScore, b);
-                    if(!endGame){
-                        return endGame;
-                    }
-                    cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
-                    return true;                    
+                }catch(string error){
+                    cout << error << endl;
+                    continue;
                 }
-    }
+                bool endGame = checkEnd(whiteScore, blackScore, b);
+                if(!endGame){
+                    return endGame;
+                }
+                cout << (b->getTurn() == 'w' ? "White" : "Black") << "'s turn: " <<endl;
+                return true;                    
+            }   
+        }
                     }}
                 }else if(command =="undo"){
                     undoMove(b);
                 }else if(command == "resign"){
-                    resign(whiteScore, blackScore, b);
+                    return resign(whiteScore, blackScore, b);
                 }
     }
-    return true;
+
 }
 
 bool Computer1::move(double &whiteScore, double &blackScore){
     string command;
     while(cin >> command){
-    if(command == "move"){
-    allValidMoves.clear();
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
-            for(int k = 0; k < 8; k++){
-                for(int l = 0; l < 8; l++){
-                    try{
-                        b->move(coord{i,j}, coord{k,l});
-                        b->undo();  //check all possible moves, if valid, undo and add to allValidMoves
-                        allValidMoves.push_back(to_string(i) + to_string(j) + to_string(k) + to_string(l));
-                    }catch(std::string error){
-                        
+        if(command == "move"){
+            allValidMoves.clear();
+            for(int i = 0; i < 8; i++){
+                for(int j = 0; j < 8; j++){
+                    for(int k = 0; k < 8; k++){
+                        for(int l = 0; l < 8; l++){
+                            try{
+                                b->move(coord{i,j}, coord{k,l});
+                                b->undo();  //check all possible moves, if valid, undo and add to allValidMoves
+                                allValidMoves.push_back(to_string(i) + to_string(j) + to_string(k) + to_string(l));
+                            }catch(std::string error){
+                                
+                            }
+                        }
                     }
                 }
             }
+            return computerMove(whiteScore, blackScore);
+        }else if(command =="undo"){
+                    undoMove(b);
+        }else if(command == "resign"){
+            return resign(whiteScore, blackScore, b);
         }
     }
-    return computerMove(whiteScore, blackScore);
-    }else if(command =="undo"){
-                    undoMove(b);
-                }else if(command == "resign"){
-                    resign(whiteScore, blackScore, b);
-                }
-}
-return true;
-
+    return true;
 }
 
 bool Computer2::move(double &whiteScore, double &blackScore){
@@ -213,11 +212,13 @@ bool Computer2::move(double &whiteScore, double &blackScore){
         }
     }
     return computerMove(whiteScore, blackScore);
-    }else if(command =="undo"){
-                    undoMove(b);
-                }else if(command == "resign"){
-                    resign(whiteScore, blackScore, b);
-                }
+    }
+    else if(command =="undo"){
+        undoMove(b);
+    }
+    else if(command == "resign"){
+        return resign(whiteScore, blackScore, b);
+    }
 }
 return true;
 
@@ -301,11 +302,13 @@ bool Computer3::move(double &whiteScore, double &blackScore){
         }
     }
     return computerMove(whiteScore, blackScore);
-    }else if(command =="undo"){
+    }
+    else if(command =="undo"){
                     undoMove(b);
-                }else if(command == "resign"){
-                    resign(whiteScore, blackScore, b);
-                }
+    }
+    else if(command == "resign"){
+        return resign(whiteScore, blackScore, b);
+    }
 }
 return true;
 
@@ -323,7 +326,7 @@ bool Computer4::move(double &whiteScore, double &blackScore){
     {'R',5},
     {'q',9},
     {'Q',9},
-};
+    };
     char colorAlly = b->getTurn();
     char colorEnemy;
     if(colorAlly == 'b'){
@@ -428,13 +431,15 @@ bool Computer4::move(double &whiteScore, double &blackScore){
         }
     }
     return computerMove(whiteScore, blackScore);
-    }else if(command =="undo"){
-                    undoMove(b);
-                }else if(command == "resign"){
-                    resign(whiteScore, blackScore, b);
-                }
+    }
+    else if(command =="undo"){
+        undoMove(b);
+    }
+    else if(command == "resign"){
+        return resign(whiteScore, blackScore, b);
+    }
 }
-return true;
+    return true;
 
 }
 
