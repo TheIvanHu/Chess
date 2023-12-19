@@ -30,7 +30,6 @@ class Piece{
 };
 
 class Rook : public Piece {
-    
     public:
         Rook(bool w, coord pos); //bool iswhite position
         ~Rook(){};
