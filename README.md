@@ -21,5 +21,4 @@ And then use the executable to begin
 ```
 
 Example games are shown in the testcase folder, to initiate a game, first input 'game', before specifying if the two players should be either 'player', or 'computer1', 'computer2', 'computer3', 'computer4'. Here is an example of the game being played.
-
-The UML of this program is as shown below
+![chess_example](https://github.com/TheIvanHu/Chess/assets/62312822/561a5485-65f2-492b-ad4f-da4dfe964901)
